@@ -13,7 +13,7 @@ function loadStats() {
     var f = new File(STATS_FILE);
     var stats = {};
     if (f.exists && f.open("r")) {
-        var content = f.readAll.join("\n");
+        var content = f.readAll().join("\n");
         f.close();
         if (content.length > 0) {
             stats = JSON.parse(content);
