@@ -70,7 +70,7 @@ function makeEmptyBoard() {
 }
 
 // Function to display the game board
-function displayBoard(board, currentRow, mode) {
+function displayBoard(board, currentRow, mode, ANSWERS) {
     var CTRL_A = "\x01";
     var columns = (mode === "80") ? 80 : 40;
     var i, j;
@@ -173,7 +173,7 @@ function playWordle(mode, game_mode) {
         console.putmsg("Game over! The word was: " + word + "\r\n");
     }
 
-    displayBoard(board, currentRow, mode);
+    displayBoard(board, currentRow, mode, ANSWERS);
    
 
     if (game_mode == "daily") {
