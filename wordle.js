@@ -132,7 +132,7 @@ function playWordle(mode, game_mode) {
     var gameOver = false; 
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
-        displayBoard(board, currentRow, mode);
+        displayBoard(board, currentRow, mode, ANSWERS);
 
         var guess = "";
         while (guess.length !== WORD_LENGTH) {
