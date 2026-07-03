@@ -6,7 +6,6 @@ load("sbbsdefs.js")
 
 var MAX_ATTEMPTS = 6;
 var WORD_LENGTH = 5;
-var ANSWERS = [];
 var STATS_FILE = system.data_dir + "wordle_stats.json"
 
 function loadStats() {
@@ -109,8 +108,9 @@ function displayBoard(board, currentRow, mode) {
 }
 
 // Playing the Game
-function playWordle(mode) {
-    // var stats = loadStats();
+function playWordle(mode, game_mode) {
+    var ANSWERS = [];
+    var stats = loadStats();
 
     var word = "";
     
@@ -120,9 +120,12 @@ function playWordle(mode) {
             console.putmsg("You can try practice mode though!\r\n"); 
             return;
         }
+        else {
+            console.putmsg("Testing\r\n");
+        }
     }
     else if (game_mode === "practice") {
-        WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
+        word = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
     }
     var board = makeEmptyBoard();
     var currentRow = 0;
@@ -268,8 +271,9 @@ function startWordle(mode) {
 	          console.putmsg("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
 	          console.putmsg("\r\n");
             console.putmsg("d) Daily  p) Practice  .) quit\r\n")
-            choice = console.getstr(1, K_UPPER);
         }
+
+        choice = console.getstr(1, K_UPPER);
 
         if (choice === "D"){
             playWordle(mode, "daily");
