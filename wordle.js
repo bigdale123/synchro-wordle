@@ -267,7 +267,7 @@ function startWordle(mode) {
 	          console.putmsg("Welcome to Wordle!\r\n");
 	          console.putmsg("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
 	          console.putmsg("\r\n");
-            console.putmsg("d) Daily  p) Practice  .) quit")
+            console.putmsg("d) Daily  p) Practice  .) quit\r\n")
             choice = console.getstr(1, K_UPPER);
         }
 
