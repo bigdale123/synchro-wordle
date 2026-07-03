@@ -175,9 +175,47 @@ function playWordle(mode) {
                 maxStreak: 0
             }
         }
+        var last_date_played = stats[user.alias].lastPlayed;
         stats[user.alias].lastPlayed = get_todays_date();
+        // Win or Loss stat
+        if(gameOver) {
+            stats[user.alias].wins++;
+            // streak calculation
+            if (check_if_streak_valid(last_date_played)) {
+                stats[user.alias].streak++;
+            }
+            else {
+                stats[user.alias].streak = 1;
+            }
+            if (stats[user.alias].streak > stats[user.alias].maxStreak) {
+                stats[user.alias].maxStreak = stats[user.alias].streak;
+            }
+        }
+        else {
+            stats[user.alias].losses++;
+            stats[user.alias].streak = 0;
+        }
 
         saveStats(stats);
+    }
+}
+
+function check_if_streak_valid(last_date_played) {
+    if (!last_date_played) { // edge case for new players
+        return false;
+    }
+    // Dates should be handled this way to account for end of month rollovers
+    var last_date = new Date(last_date_played + "T00:00:00");
+    var today = new Date(get_todays_date() + "T00:00:00");
+
+    var msPerDay = 24 * 60 * 60 * 1000;
+    var delta_days = Math.round((today-last_date) / msPerDay);
+
+    if (delta_days === 1) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
 
@@ -214,7 +252,7 @@ function check_player_can_play(stats) {
 function startWordle(mode) {
     console.clear();
     if (mode === "40") {
-	      console.printfile(js.exec_dir + "banner.40col.msg");
+	      console.printfile(js.exec_dir + "banner.40col.msg"); // 7 Rows
 	      console.putmsg("\r\n");
 	      console.putmsg("Welcome to Wordle!\r\n");
 	      console.putmsg("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
