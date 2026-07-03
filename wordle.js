@@ -204,13 +204,10 @@ function get_todays_date() {
 function check_player_can_play(stats) {
     var todays_date = get_todays_date();
     if (stats[user.alias] && stats[user.alias].lastPlayed === todays_date) {
-        return true;
-    }
-    else if (!stats[user.alias]) {
-        return true;
+        return false;
     }
     else {
-        return false;
+        return true;
     }
 }
 
