@@ -205,6 +205,9 @@ function check_player_can_play(stats) {
     if (stats[user.alias] && stats[user.alias].lastPlayed === todays_date) {
         return true;
     }
+    else if (!stats[user.alias]) {
+        return true;
+    }
     else {
         return false;
     }
