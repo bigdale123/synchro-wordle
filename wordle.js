@@ -111,78 +111,80 @@ function displayBoard(board, currentRow, mode) {
 // Playing the Game
 function playWordle(mode) {
     if (!check_player_can_play()) {
-	console.putmsg("You've already played today!\r\n");
-	console.putmsg("You can try practice mode though!\r\n");
+        console.putmsg("You've already played today!\r\n");
+        console.putmsg("You can try practice mode though!\r\n");
     }
 
-    var word = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
-    var board = makeEmptyBoard();
-    var currentRow = 0;
-    var gameOver = false; 
+    else {
+        var word = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
+        var board = makeEmptyBoard();
+        var currentRow = 0;
+        var gameOver = false; 
 
-    while (!gameOver && currentRow < MAX_ATTEMPTS) {
+        while (!gameOver && currentRow < MAX_ATTEMPTS) {
+            displayBoard(board, currentRow, mode);
+
+            var guess = "";
+            while (guess.length !== WORD_LENGTH) {
+                console.putmsg("Enter your " + WORD_LENGTH + "-letter guess:\r\n");
+                guess = console.getstr(WORD_LENGTH, K_UPPER);
+                if (guess === null) {
+                    guess = ""; // user disconnected or aborted input
+                }
+
+                if (guess.length !== WORD_LENGTH) {
+                    console.putmsg("Please enter exactly " + WORD_LENGTH + " letters.\r\n");
+                }
+            }
+            ANSWERS.push(guess);
+
+            // Check if the guess is correct
+            var result = checkGuess(guess, word);
+            board[currentRow] = result;
+
+            var allGreen = true;
+            var i;
+            for (i = 0; i < result.length; i++) {
+                if (result[i] !== "G") {
+                    allGreen = false;
+                    break;
+                }
+            }
+
+            currentRow++;
+
+            if (allGreen) {
+                console.putmsg("Congratulations! You guessed the word: " + word + "\r\n");
+                gameOver = true;
+            }
+        }
+
+        if (!gameOver) {
+            console.putmsg("Game over! The word was: " + word + "\r\n");
+        }
+
         displayBoard(board, currentRow, mode);
-
-        var guess = "";
-        while (guess.length !== WORD_LENGTH) {
-            console.putmsg("Enter your " + WORD_LENGTH + "-letter guess:\r\n");
-            guess = console.getstr(WORD_LENGTH, K_UPPER);
-            if (guess === null) {
-                guess = ""; // user disconnected or aborted input
-            }
-
-            if (guess.length !== WORD_LENGTH) {
-                console.putmsg("Please enter exactly " + WORD_LENGTH + " letters.\r\n");
-            }
-        }
-	ANSWERS.push(guess);
-
-        // Check if the guess is correct
-        var result = checkGuess(guess, word);
-        board[currentRow] = result;
-
-        var allGreen = true;
-        var i;
-        for (i = 0; i < result.length; i++) {
-            if (result[i] !== "G") {
-                allGreen = false;
-                break;
-            }
-        }
-
-        currentRow++;
-
-        if (allGreen) {
-            console.putmsg("Congratulations! You guessed the word: " + word + "\r\n");
-            gameOver = true;
-        }
     }
-
-    if (!gameOver) {
-        console.putmsg("Game over! The word was: " + word + "\r\n");
-    }
-
-    displayBoard(board, currentRow, mode);
 }
 
 // Determine screen mode (40 or 80 columns)
 function getScreenMode() {
-	var screenWidth = console.screen_columns;
-	return (screenWidth >= 80) ? "80" : "40";
+    var screenWidth = console.screen_columns;
+    return (screenWidth >= 80) ? "80" : "40";
 }
 
 function check_player_can_play(stats) {
-	var date = new Date();
-	var year = date.getFullYear();
-	var month = date.getMonth() + 1;
-	var day = date.getDate();
-	if (month < 10) {
-		month = "0"+month;
-	}
-	if (day < 10) {
-		day = "0"+day;
-	}
-	var todays_date = ""+year+"-"+month+"-"+day;
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    if (month < 10) { 
+        month = "0"+month;
+    }
+    if (day < 10) {
+        day = "0"+day;
+    }
+    var todays_date = ""+year+"-"+month+"-"+day;
     if (stats[user.alias] && stats[user.alias].lastPlayed === todays_date) {
         return true;
     }
@@ -192,15 +194,15 @@ function check_player_can_play(stats) {
 }
 
 function startWordle(mode) {
-	console.clear();
-	if (mode === "40") {
-	    console.printfile(js.exec_dir + "banner.40col.msg");
-	    console.putmsg("\r\n");
-	    console.putmsg("Welcome to Wordle!\r\n");
-	    console.putmsg("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
-	    console.putmsg("\r\n");
-	}
-	playWordle(mode);
+    console.clear();
+    if (mode === "40") {
+	      console.printfile(js.exec_dir + "banner.40col.msg");
+	      console.putmsg("\r\n");
+	      console.putmsg("Welcome to Wordle!\r\n");
+	      console.putmsg("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
+	      console.putmsg("\r\n");
+    }
+    playWordle(mode);
 }
 
 // Start the game
