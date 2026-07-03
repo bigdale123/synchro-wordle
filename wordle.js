@@ -110,7 +110,8 @@ function displayBoard(board, currentRow, mode) {
 
 // Playing the Game
 function playWordle(mode) {
-    if (!check_player_can_play()) {
+    var stats = loadStats();
+    if (!check_player_can_play(stats)) {
         console.putmsg("You've already played today!\r\n");
         console.putmsg("You can try practice mode though!\r\n");
     }
@@ -164,6 +165,19 @@ function playWordle(mode) {
         }
 
         displayBoard(board, currentRow, mode);
+
+        if (!stats[user.alias]) {
+            stats[user.alias] = {
+                lastPlayed: "",
+                wins: 0,
+                losses: 0,
+                streak: 0,
+                maxStreak: 0
+            }
+        }
+        stats[user.alias].lastPlayed = get_todays_date();
+
+        saveStats(stats);
     }
 }
 
@@ -173,7 +187,7 @@ function getScreenMode() {
     return (screenWidth >= 80) ? "80" : "40";
 }
 
-function check_player_can_play(stats) {
+function get_todays_date() {
     var date = new Date();
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
@@ -184,7 +198,10 @@ function check_player_can_play(stats) {
     if (day < 10) {
         day = "0"+day;
     }
-    var todays_date = ""+year+"-"+month+"-"+day;
+    return ""+year+"-"+month+"-"+day;
+}
+
+function check_player_can_play(stats) {
     if (stats[user.alias] && stats[user.alias].lastPlayed === todays_date) {
         return true;
     }
