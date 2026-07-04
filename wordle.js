@@ -422,6 +422,7 @@ function startWordle(mode) {
 	          console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 39) + "\n", p_mode=P_NOPAUSE);
             console.putmsg("\n", p_mode=P_NOPAUSE);
             display_scoreboard(7, mode);
+            console.putmsg("\n", p_mode=P_NOPAUSE);
             console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
         }
 
