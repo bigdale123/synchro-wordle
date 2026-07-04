@@ -277,7 +277,7 @@ function display_scoreboard(rows, mode) {
 
     if (mode === "40") {
         var RANK_W = 4;
-        var NAME_W = 10;
+        var NAME_W = 9;
         var PCT_W = 4;
         var MAX_STREAK_W = 10;
 
