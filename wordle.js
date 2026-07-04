@@ -416,12 +416,22 @@ function startWordle(mode) {
     while (choice !== ".") {
         console.clear();
         if (mode === "40") {
-	          console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
+	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
             console.putmsg("\n", p_mode=P_NOPAUSE);
-	          console.putmsg(centerText("Welcome to Wordle!",40), p_mode=P_NOPAUSE);
-	          console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40), p_mode=P_NOPAUSE);
+	        console.putmsg(centerText("Welcome to Wordle!",40), p_mode=P_NOPAUSE);
+	        console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40), p_mode=P_NOPAUSE);
             console.putmsg("\n", p_mode=P_NOPAUSE);
             display_scoreboard(7, mode);
+            console.putmsg("\n", p_mode=P_NOPAUSE);
+            console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
+        }
+        else {
+            console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
+            console.putmsg("\n", p_mode=P_NOPAUSE);
+	        console.putmsg(centerText("Welcome to Wordle!",40), p_mode=P_NOPAUSE);
+	        console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40), p_mode=P_NOPAUSE);
+            console.putmsg("\n", p_mode=P_NOPAUSE);
+            // display_scoreboard(7, mode);
             console.putmsg("\n", p_mode=P_NOPAUSE);
             console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
         }
