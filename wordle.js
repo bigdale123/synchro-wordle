@@ -338,7 +338,7 @@ function display_scoreboard(rows, mode) {
 
         // Helper to build a horizontal border segment
         function borderLine(left, mid, right) {
-            var line = " "+left;
+            var line = "  "+left;
             line += repeatChar("\xc4", RANK_W + 2);
             line += mid;
             line += repeatChar("\xc4", NAME_W + 2);
@@ -352,7 +352,7 @@ function display_scoreboard(rows, mode) {
 
         // Helper to build one row's worth of cells, given raw display values
         function buildRow(rankStr, nameStr, pctStr, maxStreakStr) {
-            return " \xb3 " + padRight(rankStr, RANK_W) + " \xb3 " +
+            return "  \xb3 " + padRight(rankStr, RANK_W) + " \xb3 " +
                    padRight(nameStr, NAME_W) + " \xb3 " +
                    padLeft(pctStr, PCT_W) + " \xb3 " +
                    padLeft(maxStreakStr, MAX_STREAK_W) + " \xb3";
@@ -362,7 +362,7 @@ function display_scoreboard(rows, mode) {
         console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\r\n");
 
         // Title bar (spans full width as plain text, no column separators)
-        console.putmsg(" \xb3           " + CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard       " + CTRL_A + "N" + "\xb3" + "\r\n");
+        console.putmsg("  \xb3           " + CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard       " + CTRL_A + "N" + "\xb3" + "\r\n");
 
         // Separator under title
         console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\r\n");
