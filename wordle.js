@@ -415,7 +415,7 @@ function startWordle(mode) {
     var choice = "";
     while (choice !== ".") {
         console.clear();
-        console.pause_on = false;
+        console.flush();
         if (mode === "40") {
 	          console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
             console.putmsg("\n");
@@ -428,7 +428,6 @@ function startWordle(mode) {
 
         choice = console.getstr(1, K_UPPER);
 
-        console.pause_on = true;
         if (choice === "D"){
             playWordle(mode, "daily");
         }
