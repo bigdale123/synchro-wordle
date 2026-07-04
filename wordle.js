@@ -372,19 +372,19 @@ function display_scoreboard(rows, mode) {
         }
 
         // Top border
-        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\n");
+        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "");
 
         // Title bar (spans full width as plain text, no column separators)
-        console.putmsg("\xb3" + CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\xb3" + "\n");
+        console.putmsg("\xb3" + CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\xb3" + "");
 
         // Separator under title
-        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\n");
+        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "");
 
         // Header row
-        console.putmsg(buildRow("Rank", "Name", "Win%", "Max Streak") + "\n");
+        console.putmsg(buildRow("Rank", "Name", "Win%", "Max Streak") + "");
 
         // Header separator
-        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "\n");
+        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "");
 
         // Data rows - pad out to `rows` height even if fewer players exist
         var i;
@@ -396,14 +396,14 @@ function display_scoreboard(rows, mode) {
                     entry.alias,
                     entry.winPct + "%",
                     "" + entry.maxStreak
-                ) + "\n");
+                ) + "");
             } else {
-                console.putmsg(buildRow("", "", "", "") + "\n");
+                console.putmsg(buildRow("", "", "", "") + "");
             }
         }
 
         // Bottom border
-        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "\n");
+        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "");
     }
     else {
         // 80-column layout placeholder - not yet implemented
@@ -418,14 +418,10 @@ function startWordle(mode) {
         if (mode === "40") {
 	          console.printfile(js.exec_dir + "banner.40col.msg"); // 7 Rows
             console.putmsg("\n");
-	          console.putmsg("           Welcome to Wordle!\n");
-	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\n");
+	          console.putmsg(centerText("Welcome to Wordle!",39)+"\n");
+	          console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 39) + "\n");
             console.putmsg("\n");
-            console.putmsg(centerText("LINE TEST", 39) + "\n");
-            console.putmsg("***************************************\n");
-            console.putmsg("***************************************\n");
-            console.putmsg("***************************************\n");
-            // display_scoreboard(7, mode);
+            display_scoreboard(7, mode);
             console.putmsg("d) Daily  p) Practice  .) quit : ");
         }
 
