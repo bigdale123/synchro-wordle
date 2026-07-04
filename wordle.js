@@ -114,7 +114,7 @@ function playWordle(mode, game_mode) {
     var word = "";
     
     if (game_mode === "daily") {
-        if (!check_player_can_play(stats)) {
+        if (check_player_can_play(stats)) {
             console.putmsg("You've already played today!\r\n");
             console.putmsg("You can try practice mode though!\r\n"); 
             return;
