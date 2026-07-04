@@ -361,7 +361,7 @@ function display_scoreboard(rows, mode) {
         // Header row
         var headerRow = "\xb3 " + padRight("Name", NAME_W) + " \xb3 " +
                          padRight("Win%", PCT_W) + " \xb3 " +
-                         padRight("Strk", STREAK_W) + " \xb3";
+                         padRight("Streak", STREAK_W) + " \xb3";
         console.putmsg(headerRow + "\r\n");
 
         // Header separator
@@ -396,7 +396,8 @@ function startWordle(mode) {
             console.putmsg("\r\n");
 	          console.putmsg("           Welcome to Wordle!\r\n");
 	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
-            display_scoreboard(14, mode);
+            console.putmsg("\r\n");
+            display_scoreboard(13, mode);
             console.putmsg("d) Daily  p) Practice  .) quit : ");
         }
 
