@@ -30,7 +30,6 @@ function saveStats(stats) {
     }
 }
 
-
 // Load word list from file
 var WORDS = [];
 var word_file = new File(js.exec_dir + "word-bank.csv");
@@ -121,7 +120,7 @@ function playWordle(mode, game_mode) {
             return;
         }
         else {
-            console.putmsg("Testing\r\n");
+            word = getDailyWord();
         }
     }
     else if (game_mode === "practice") {
@@ -248,6 +247,16 @@ function get_todays_date() {
         day = "0"+day;
     }
     return ""+year+"-"+month+"-"+day;
+}
+
+function getDailyWord() {
+    var today = get_todays_date().split("-");
+    var date = new Date(parseInt(today[0]), parseInt(today[1]) - 1, parseInt(today[2]));
+    var epoch = new Date(2020, 0, 1);
+    var msPerDay = 24 * 60 * 60 * 1000;
+    var seed = Math.round((date - epoch) / msPerDay);
+    var index = seed % WORDS.length;
+    return WORDS[index].toUpperCase();
 }
 
 function check_player_can_play(stats) {
