@@ -415,7 +415,6 @@ function startWordle(mode) {
     var choice = "";
     while (choice !== ".") {
         console.clear();
-        console.flush();
         if (mode === "40") {
 	          console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
             console.putmsg("\n");
@@ -423,7 +422,7 @@ function startWordle(mode) {
 	          console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 39) + "\n");
             console.putmsg("\n");
             display_scoreboard(7, mode);
-            console.putmsg("d) Daily  p) Practice  .) quit : ");
+            console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
         }
 
         choice = console.getstr(1, K_UPPER);
