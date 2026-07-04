@@ -360,7 +360,7 @@ function display_scoreboard(rows, mode) {
         }
 
         // Top border
-
+        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\r\n");
 
         // Title Bar
         console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard" + CTRL_A + "N" + "\r\n");
@@ -369,9 +369,11 @@ function display_scoreboard(rows, mode) {
         console.putmsg(borderLine("\xc3", "\xc4", "\xb4") + "\r\n");
 
         // Header row
-        var headerRow = "\xb3 " + padRight("Name", NAME_W) + " \xb3 " +
-                         padRight("Win%", PCT_W) + " \xb3 " +
-                         padRight("Streak", STREAK_W) + " \xb3";
+        var headerRow = "\xb3 " + padRight("Rank", RANK_W) + " \xb3" +
+                        padRight("Name", NAME_W) + " \xb3 " +
+                        padRight("Win%", PCT_W) + " \xb3 " +
+                        padRight("Streak", STREAK_W) + " \xb3" +
+                        padRight("Max Streak", MAX_STREAK_W) + " \xb3";
         console.putmsg(headerRow + "\r\n");
 
         // Header separator
