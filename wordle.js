@@ -271,59 +271,115 @@ function check_player_can_play(stats) {
 }
 
 function display_scoreboard(rows, mode) {
-    // scoreboard can be "rows"" tall.
+    // scoreboard can be "rows" tall.
     var stats = loadStats();
-        var CTRL_A = "\x01";
+    var CTRL_A = "\x01";
 
     if (mode === "40") {
-        // Convert stats object into a sortable array of {alias, ...} entries
+        // Column layout for a 40-col table:
+        // # (2) + Name (10) + Win% (6) + Streak (5) + borders/spacing
+        var NAME_W = 10;
+        var PCT_W = 5;
+        var STREAK_W = 5;
+
+        // Convert stats object into a sortable array
         var entries = [];
         var alias;
         for (alias in stats) {
             if (stats.hasOwnProperty(alias)) {
+                var s = stats[alias];
+                var totalGames = s.wins + s.losses;
+                var winPct = (totalGames > 0) ? Math.round((s.wins / totalGames) * 100) : 0;
                 entries.push({
                     alias: alias,
-                    wins: stats[alias].wins,
-                    losses: stats[alias].losses,
-                    streak: stats[alias].streak,
-                    maxStreak: stats[alias].maxStreak
+                    winPct: winPct,
+                    streak: s.streak
                 });
             }
         }
 
-        // Sort descending by wins
+        // Sort descending by win percentage
         entries.sort(function(a, b) {
-            return b.wins - a.wins;
+            return b.winPct - a.winPct;
         });
 
-        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "== Wordle Scoreboard ==" + CTRL_A + "N" + "\r\n");
+        // Helper to pad a string to fixed width, left-aligned
+        function padRight(str, width) {
+            str = "" + str;
+            if (str.length > width) {
+                return str.substring(0, width);
+            }
+            while (str.length < width) {
+                str += " ";
+            }
+            return str;
+        }
+
+        // Helper to pad a string to fixed width, right-aligned
+        function padLeft(str, width) {
+            str = "" + str;
+            if (str.length > width) {
+                return str.substring(0, width);
+            }
+            while (str.length < width) {
+                str = " " + str;
+            }
+            return str;
+        }
+
+        // Helper to build a horizontal border segment
+        function borderLine(left, mid, right) {
+            var line = left;
+            line += repeatChar("\xc4", NAME_W + 2);
+            line += mid;
+            line += repeatChar("\xc4", PCT_W + 2);
+            line += mid;
+            line += repeatChar("\xc4", STREAK_W + 2);
+            line += right;
+            return line;
+        }
+
+        function repeatChar(ch, count) {
+            var out = "";
+            var i;
+            for (i = 0; i < count; i++) {
+                out += ch;
+            }
+            return out;
+        }
+
+        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard" + CTRL_A + "N" + "\r\n");
 
         if (entries.length === 0) {
             console.putmsg("No games played yet!\r\n");
-        } else {
-            var count = Math.min(rows, entries.length);
-            var i;
-            for (i = 0; i < count; i++) {
-                var entry = entries[i];
-                var name = entry.alias;
-
-                // Truncate long aliases so the line fits in 40 columns
-                if (name.length > 12) {
-                    name = name.substring(0, 12);
-                }
-                // Pad name to a fixed width for alignment
-                while (name.length < 12) {
-                    name += " ";
-                }
-
-                var line = (i + 1) + ". " + name +
-                    " W:" + entry.wins +
-                    " L:" + entry.losses +
-                    " S:" + entry.streak;
-
-                console.putmsg(line + "\r\n");
-            }
+            return;
         }
+
+        // Top border
+        console.putmsg(borderLine("\xda", "\xc2", "\xbf") + "\r\n");
+
+        // Header row
+        var headerRow = "\xb3 " + padRight("Name", NAME_W) + " \xb3 " +
+                         padRight("Win%", PCT_W) + " \xb3 " +
+                         padRight("Strk", STREAK_W) + " \xb3";
+        console.putmsg(headerRow + "\r\n");
+
+        // Header separator
+        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "\r\n");
+
+        // Data rows
+        var count = Math.min(rows, entries.length);
+        var i;
+        for (i = 0; i < count; i++) {
+            var entry = entries[i];
+            var dataRow = "\xb3 " + padRight(entry.alias, NAME_W) + " \xb3 " +
+                          padLeft(entry.winPct + "%", PCT_W) + " \xb3 " +
+                          padLeft(entry.streak, STREAK_W) + " \xb3";
+            console.putmsg(dataRow + "\r\n");
+        }
+
+        // Bottom border
+        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "\r\n");
     }
     else {
         // 80-column layout placeholder - not yet implemented
