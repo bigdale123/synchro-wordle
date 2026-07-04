@@ -279,7 +279,6 @@ function display_scoreboard(rows, mode) {
         var RANK_W = 4;
         var NAME_W = 10;
         var PCT_W = 5;
-        var STREAK_W = 6;
         var MAX_STREAK_W = 5;
 
         // Convert stats object into a sortable array
@@ -346,19 +345,16 @@ function display_scoreboard(rows, mode) {
             line += mid;
             line += repeatChar("\xc4", PCT_W + 2);
             line += mid;
-            line += repeatChar("\xc4", STREAK_W + 2);
-            line += mid;
             line += repeatChar("\xc4", MAX_STREAK_W + 2);
             line += right;
             return line;
         }
 
         // Helper to build one row's worth of cells, given raw display values
-        function buildRow(rankStr, nameStr, pctStr, streakStr, maxStreakStr) {
+        function buildRow(rankStr, nameStr, pctStr, maxStreakStr) {
             return "\xb3 " + padRight(rankStr, RANK_W) + " \xb3 " +
                    padRight(nameStr, NAME_W) + " \xb3 " +
                    padLeft(pctStr, PCT_W) + " \xb3 " +
-                   padLeft(streakStr, STREAK_W) + " \xb3 " +
                    padLeft(maxStreakStr, MAX_STREAK_W) + " \xb3";
         }
 
@@ -372,7 +368,7 @@ function display_scoreboard(rows, mode) {
         console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\r\n");
 
         // Header row
-        console.putmsg(buildRow("Rank", "Name", "Win%", "Strk", "Max") + "\r\n");
+        console.putmsg(buildRow("Rank", "Name", "Win%", "Max") + "\r\n");
 
         // Header separator
         console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "\r\n");
@@ -386,11 +382,10 @@ function display_scoreboard(rows, mode) {
                     "" + (i + 1),
                     entry.alias,
                     entry.winPct + "%",
-                    "" + entry.streak,
                     "" + entry.maxStreak
                 ) + "\r\n");
             } else {
-                console.putmsg(buildRow("", "", "", "", "") + "\r\n");
+                console.putmsg(buildRow("", "", "", "") + "\r\n");
             }
         }
 
