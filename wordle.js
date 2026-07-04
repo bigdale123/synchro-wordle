@@ -114,7 +114,7 @@ function playWordle(mode, game_mode) {
     var word = "";
     
     if (game_mode === "daily") {
-        if (check_player_can_play(stats)) {
+        if (!check_player_can_play(stats)) {
             console.putmsg("You've already played today!\r\n");
             console.putmsg("You can try practice mode though!\r\n"); 
             return;
@@ -270,17 +270,78 @@ function check_player_can_play(stats) {
     }
 }
 
+function display_scoreboard(rows, mode) {
+    // scoreboard can be "rows"" tall.
+    var stats = loadStats();
+        var CTRL_A = "\x01";
+
+    if (mode === "40") {
+        // Convert stats object into a sortable array of {alias, ...} entries
+        var entries = [];
+        var alias;
+        for (alias in stats) {
+            if (stats.hasOwnProperty(alias)) {
+                entries.push({
+                    alias: alias,
+                    wins: stats[alias].wins,
+                    losses: stats[alias].losses,
+                    streak: stats[alias].streak,
+                    maxStreak: stats[alias].maxStreak
+                });
+            }
+        }
+
+        // Sort descending by wins
+        entries.sort(function(a, b) {
+            return b.wins - a.wins;
+        });
+
+        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "== Wordle Scoreboard ==" + CTRL_A + "N" + "\r\n");
+
+        if (entries.length === 0) {
+            console.putmsg("No games played yet!\r\n");
+        } else {
+            var count = Math.min(rows, entries.length);
+            var i;
+            for (i = 0; i < count; i++) {
+                var entry = entries[i];
+                var name = entry.alias;
+
+                // Truncate long aliases so the line fits in 40 columns
+                if (name.length > 12) {
+                    name = name.substring(0, 12);
+                }
+                // Pad name to a fixed width for alignment
+                while (name.length < 12) {
+                    name += " ";
+                }
+
+                var line = (i + 1) + ". " + name +
+                    " W:" + entry.wins +
+                    " L:" + entry.losses +
+                    " S:" + entry.streak;
+
+                console.putmsg(line + "\r\n");
+            }
+        }
+    }
+    else {
+        // 80-column layout placeholder - not yet implemented
+        console.putmsg("Scoreboard not yet available in this mode.\r\n");
+    }
+}
+
 function startWordle(mode) {
     var choice = "";
     while (choice !== ".") {
         console.clear();
         if (mode === "40") {
 	          console.printfile(js.exec_dir + "banner.40col.msg"); // 7 Rows
-	          console.putmsg("\r\n");
-	          console.putmsg("Welcome to Wordle!\r\n");
-	          console.putmsg("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
-	          console.putmsg("\r\n");
-            console.putmsg("d) Daily  p) Practice  .) quit\r\n")
+            console.putmsg("\r\n");
+	          console.putmsg("           Welcome to Wordle!\r\n");
+	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
+            display_scoreboard(14, mode);
+            console.putmsg("d) Daily  p) Practice  .) quit : ");
         }
 
         choice = console.getstr(1, K_UPPER);
