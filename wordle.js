@@ -278,9 +278,11 @@ function display_scoreboard(rows, mode) {
     if (mode === "40") {
         // Column layout for a 40-col table:
         // # (2) + Name (10) + Win% (6) + Streak (5) + borders/spacing
+        var RANK_W = 5;
         var NAME_W = 10;
         var PCT_W = 5;
         var STREAK_W = 5;
+        var MAX_STREAK_W = 5;
 
         // Convert stats object into a sortable array
         var entries = [];
@@ -330,11 +332,15 @@ function display_scoreboard(rows, mode) {
         // Helper to build a horizontal border segment
         function borderLine(left, mid, right) {
             var line = left;
+            line += repeatChar("\xc4", RANK_W + 2);
+            line += mid;
             line += repeatChar("\xc4", NAME_W + 2);
             line += mid;
             line += repeatChar("\xc4", PCT_W + 2);
             line += mid;
             line += repeatChar("\xc4", STREAK_W + 2);
+            line += mid;
+            line += repeatChar("\xc4", MAX_STREAK_W + 2);
             line += right;
             return line;
         }
@@ -348,15 +354,19 @@ function display_scoreboard(rows, mode) {
             return out;
         }
 
-        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard" + CTRL_A + "N" + "\r\n");
-
         if (entries.length === 0) {
             console.putmsg("No games played yet!\r\n");
             return;
         }
 
         // Top border
-        console.putmsg(borderLine("\xda", "\xc2", "\xbf") + "\r\n");
+
+
+        // Title Bar
+        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard" + CTRL_A + "N" + "\r\n");
+
+        // header separator
+        console.putmsg(borderLine("\xc3", "\xc4", "\xb4") + "\r\n");
 
         // Header row
         var headerRow = "\xb3 " + padRight("Name", NAME_W) + " \xb3 " +
