@@ -270,6 +270,39 @@ function check_player_can_play(stats) {
     }
 }
 
+// Helper to pad a string to fixed width, left-aligned
+function padRight(str, width) {
+    str = "" + str;
+    if (str.length > width) {
+        return str.substring(0, width);
+    }
+    while (str.length < width) {
+        str += " ";
+    }
+    return str;
+}
+
+// Helper to pad a string to fixed width, right-aligned
+function padLeft(str, width) {
+    str = "" + str;
+    if (str.length > width) {
+        return str.substring(0, width);
+    }
+    while (str.length < width) {
+        str = " " + str;
+    }
+    return str;
+}
+
+function repeatChar(ch, count) {
+    var out = "";
+    var i;
+    for (i = 0; i < count; i++) {
+        out += ch;
+    }
+    return out;
+}
+
 function centerText(str, width) {
     str = "" + str;
     if (str.length >= width) {
@@ -314,38 +347,7 @@ function display_scoreboard(rows, mode) {
             return b.winPct - a.winPct;
         });
 
-        // Helper to pad a string to fixed width, left-aligned
-        function padRight(str, width) {
-            str = "" + str;
-            if (str.length > width) {
-                return str.substring(0, width);
-            }
-            while (str.length < width) {
-                str += " ";
-            }
-            return str;
-        }
-
-        // Helper to pad a string to fixed width, right-aligned
-        function padLeft(str, width) {
-            str = "" + str;
-            if (str.length > width) {
-                return str.substring(0, width);
-            }
-            while (str.length < width) {
-                str = " " + str;
-            }
-            return str;
-        }
-
-        function repeatChar(ch, count) {
-            var out = "";
-            var i;
-            for (i = 0; i < count; i++) {
-                out += ch;
-            }
-            return out;
-        }
+        
 
         // Helper to build a horizontal border segment
         function borderLine(left, mid, right) {
