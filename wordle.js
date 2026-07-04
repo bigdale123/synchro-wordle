@@ -276,12 +276,10 @@ function display_scoreboard(rows, mode) {
     var CTRL_A = "\x01";
 
     if (mode === "40") {
-        // Column layout for a 40-col table:
-        // # (2) + Name (10) + Win% (6) + Streak (5) + borders/spacing
-        var RANK_W = 5;
+        var RANK_W = 4;
         var NAME_W = 10;
         var PCT_W = 5;
-        var STREAK_W = 5;
+        var STREAK_W = 6;
         var MAX_STREAK_W = 5;
 
         // Convert stats object into a sortable array
@@ -295,7 +293,8 @@ function display_scoreboard(rows, mode) {
                 entries.push({
                     alias: alias,
                     winPct: winPct,
-                    streak: s.streak
+                    streak: s.streak,
+                    maxStreak: s.maxStreak
                 });
             }
         }
@@ -329,6 +328,15 @@ function display_scoreboard(rows, mode) {
             return str;
         }
 
+        function repeatChar(ch, count) {
+            var out = "";
+            var i;
+            for (i = 0; i < count; i++) {
+                out += ch;
+            }
+            return out;
+        }
+
         // Helper to build a horizontal border segment
         function borderLine(left, mid, right) {
             var line = left;
@@ -345,49 +353,45 @@ function display_scoreboard(rows, mode) {
             return line;
         }
 
-        function repeatChar(ch, count) {
-            var out = "";
-            var i;
-            for (i = 0; i < count; i++) {
-                out += ch;
-            }
-            return out;
-        }
-
-        if (entries.length === 0) {
-            console.putmsg("No games played yet!\r\n");
-            return;
+        // Helper to build one row's worth of cells, given raw display values
+        function buildRow(rankStr, nameStr, pctStr, streakStr, maxStreakStr) {
+            return "\xb3 " + padRight(rankStr, RANK_W) + " \xb3 " +
+                   padRight(nameStr, NAME_W) + " \xb3 " +
+                   padLeft(pctStr, PCT_W) + " \xb3 " +
+                   padLeft(streakStr, STREAK_W) + " \xb3 " +
+                   padLeft(maxStreakStr, MAX_STREAK_W) + " \xb3";
         }
 
         // Top border
-        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\r\n");
+        console.putmsg(borderLine("\xda", "\xc2", "\xbf") + "\r\n");
 
-        // Title Bar
+        // Title bar (spans full width as plain text, no column separators)
         console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard" + CTRL_A + "N" + "\r\n");
 
-        // header separator
-        console.putmsg(borderLine("\xc3", "\xc4", "\xb4") + "\r\n");
+        // Separator under title
+        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\r\n");
 
         // Header row
-        var headerRow = "\xb3 " + padRight("Rank", RANK_W) + " \xb3" +
-                        padRight("Name", NAME_W) + " \xb3 " +
-                        padRight("Win%", PCT_W) + " \xb3 " +
-                        padRight("Streak", STREAK_W) + " \xb3" +
-                        padRight("Max Streak", MAX_STREAK_W) + " \xb3";
-        console.putmsg(headerRow + "\r\n");
+        console.putmsg(buildRow("Rank", "Name", "Win%", "Strk", "Max") + "\r\n");
 
         // Header separator
         console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "\r\n");
 
-        // Data rows
-        var count = Math.min(rows, entries.length);
+        // Data rows - pad out to `rows` height even if fewer players exist
         var i;
-        for (i = 0; i < count; i++) {
-            var entry = entries[i];
-            var dataRow = "\xb3 " + padRight(entry.alias, NAME_W) + " \xb3 " +
-                          padLeft(entry.winPct + "%", PCT_W) + " \xb3 " +
-                          padLeft(entry.streak, STREAK_W) + " \xb3";
-            console.putmsg(dataRow + "\r\n");
+        for (i = 0; i < rows; i++) {
+            if (i < entries.length) {
+                var entry = entries[i];
+                console.putmsg(buildRow(
+                    "" + (i + 1),
+                    entry.alias,
+                    entry.winPct + "%",
+                    "" + entry.streak,
+                    "" + entry.maxStreak
+                ) + "\r\n");
+            } else {
+                console.putmsg(buildRow("", "", "", "", "") + "\r\n");
+            }
         }
 
         // Bottom border
