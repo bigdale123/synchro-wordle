@@ -278,8 +278,8 @@ function display_scoreboard(rows, mode) {
     if (mode === "40") {
         var RANK_W = 4;
         var NAME_W = 10;
-        var PCT_W = 5;
-        var MAX_STREAK_W = 11;
+        var PCT_W = 4;
+        var MAX_STREAK_W = 10;
 
         // Convert stats object into a sortable array
         var entries = [];
