@@ -102,7 +102,7 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
             }
         }
         row += CTRL_A + "N"; // Reset color
-        console.putmsg(row + "\n");
+        console.putmsg(row + "\r\n");
     }
 }
 
@@ -115,13 +115,13 @@ function playWordle(mode, game_mode) {
     
     if (game_mode === "daily") {
         if (!check_player_can_play(stats)) {
-            console.putmsg("You've already played today!\n");
-            console.putmsg("You can try practice mode though!\n"); 
+            console.putmsg("You've already played today!\r\n");
+            console.putmsg("You can try practice mode though!\r\n"); 
             return;
         }
         else {
             word = getDailyWord();
-            console.putmsg(word + "\n");
+            console.putmsg(word + "\r\n");
         }
     }
     else if (game_mode === "practice") {
@@ -136,14 +136,14 @@ function playWordle(mode, game_mode) {
 
         var guess = "";
         while (guess.length !== WORD_LENGTH) {
-            console.putmsg("Enter your " + WORD_LENGTH + "-letter guess:\n");
+            console.putmsg("Enter your " + WORD_LENGTH + "-letter guess:\r\n");
             guess = console.getstr(WORD_LENGTH, K_UPPER);
             if (guess === null) {
                 guess = ""; // user disconnected or aborted input
             }
 
             if (guess.length !== WORD_LENGTH) {
-                console.putmsg("Please enter exactly " + WORD_LENGTH + " letters.\n");
+                console.putmsg("Please enter exactly " + WORD_LENGTH + " letters.\r\n");
             }
         }
         ANSWERS.push(guess);
@@ -164,13 +164,13 @@ function playWordle(mode, game_mode) {
         currentRow++;
 
         if (allGreen) {
-            console.putmsg("Congratulations! You guessed the word: " + word + "\n");
+            console.putmsg("Congratulations! You guessed the word: " + word + "\r\n");
             gameOver = true;
         }
     }
 
     if (!gameOver) {
-        console.putmsg("Game over! The word was: " + word + "\n");
+        console.putmsg("Game over! The word was: " + word + "\r\n");
     }
 
     displayBoard(board, currentRow, mode, ANSWERS);
@@ -270,6 +270,17 @@ function check_player_can_play(stats) {
     }
 }
 
+function centerText(str, width) {
+    str = "" + str;
+    if (str.length >= width) {
+        return str.substring(0, width);
+    }
+    var totalPad = width - str.length;
+    var leftPad = Math.floor(totalPad / 2);
+    var rightPad = totalPad - leftPad;
+    return repeatChar(" ", leftPad) + str + repeatChar(" ", rightPad);
+}
+
 function display_scoreboard(rows, mode) {
     // scoreboard can be "rows" tall.
     var stats = loadStats();
@@ -359,19 +370,19 @@ function display_scoreboard(rows, mode) {
         }
 
         // Top border
-        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\n");
+        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\r\n");
 
         // Title bar (spans full width as plain text, no column separators)
-        console.putmsg("\xb3           " + CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard         " + CTRL_A + "N" + "\xb3" + "\n");
+        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\r\n");
 
         // Separator under title
-        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\n");
+        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\r\n");
 
         // Header row
-        console.putmsg(buildRow("Rank", "Name", "Win%", "Max Streak") + "\n");
+        console.putmsg(buildRow("Rank", "Name", "Win%", "Max Streak") + "\r\n");
 
         // Header separator
-        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "\n");
+        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "\r\n");
 
         // Data rows - pad out to `rows` height even if fewer players exist
         var i;
@@ -383,18 +394,18 @@ function display_scoreboard(rows, mode) {
                     entry.alias,
                     entry.winPct + "%",
                     "" + entry.maxStreak
-                ) + "\n");
+                ) + "\r\n");
             } else {
-                console.putmsg(buildRow("", "", "", "") + "\n");
+                console.putmsg(buildRow("", "", "", "") + "\r\n");
             }
         }
 
         // Bottom border
-        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "\n");
+        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "\r\n");
     }
     else {
         // 80-column layout placeholder - not yet implemented
-        console.putmsg("Scoreboard not yet available in this mode.\n");
+        console.putmsg("Scoreboard not yet available in this mode.\r\n");
     }
 }
 
@@ -404,10 +415,10 @@ function startWordle(mode) {
         console.clear();
         if (mode === "40") {
 	          console.printfile(js.exec_dir + "banner.40col.msg"); // 7 Rows
-            console.putmsg("\n");
-	          console.putmsg("           Welcome to Wordle!\n");
-	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\n");
-            console.putmsg("\n");
+            console.putmsg("\r\n");
+	          console.putmsg("           Welcome to Wordle!\r\n");
+	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
+            console.putmsg("\r\n");
             display_scoreboard(7, mode);
             console.putmsg("d) Daily  p) Practice  .) quit : ");
         }
