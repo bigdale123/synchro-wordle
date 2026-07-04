@@ -414,9 +414,9 @@ function display_scoreboard(rows, mode) {
 function startWordle(mode) {
     var choice = "";
     while (choice !== ".") {
-        console.clear();
+        // console.clear(); What if...
         if (mode === "40") {
-	          console.printfile(js.exec_dir + "banner.40col.msg"); // 7 Rows
+	          console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
             console.putmsg("\n");
 	          console.putmsg(centerText("Welcome to Wordle!",39)+"\n");
 	          console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 39) + "\n");
