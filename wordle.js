@@ -421,10 +421,10 @@ function startWordle(mode) {
 	          console.putmsg("           Welcome to Wordle!\n");
 	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\n");
             console.putmsg("\n");
-            console.putmsg(centerText("LINE TEST", 40) + "\n");
-            console.putmsg("****************************************\n");
-            console.putmsg("****************************************\n");
-            console.putmsg("****************************************\n");
+            console.putmsg(centerText("LINE TEST", 39) + "\n");
+            console.putmsg("***************************************\n");
+            console.putmsg("***************************************\n");
+            console.putmsg("***************************************\n");
             // display_scoreboard(7, mode);
             console.putmsg("d) Daily  p) Practice  .) quit : ");
         }
