@@ -375,7 +375,7 @@ function display_scoreboard(rows, mode) {
         console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\r\n");
 
         // Title bar (spans full width as plain text, no column separators)
-        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\r\n");
+        console.putmsg("\xb3" + CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\xb3" + "\r\n");
 
         // Separator under title
         console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\r\n");
