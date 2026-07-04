@@ -408,7 +408,7 @@ function startWordle(mode) {
 	          console.putmsg("           Welcome to Wordle!\r\n");
 	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
             console.putmsg("\r\n");
-            display_scoreboard(6, mode);
+            display_scoreboard(7, mode);
             console.putmsg("d) Daily  p) Practice  .) quit : ");
         }
 
