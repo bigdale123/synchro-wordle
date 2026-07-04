@@ -359,10 +359,10 @@ function display_scoreboard(rows, mode) {
         }
 
         // Top border
-        console.putmsg(borderLine("\xda", "\xc2", "\xbf") + "\r\n");
+        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "\r\n");
 
         // Title bar (spans full width as plain text, no column separators)
-        console.putmsg(CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard" + CTRL_A + "N" + "\r\n");
+        console.putmsg("\xb3           " + CTRL_A + "N" + CTRL_A + "H" + "Wordle Scoreboard" + CTRL_A + "N" + "\xb3" + "\r\n");
 
         // Separator under title
         console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "\r\n");
@@ -408,7 +408,7 @@ function startWordle(mode) {
 	          console.putmsg("           Welcome to Wordle!\r\n");
 	          console.putmsg("   Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.\r\n");
             console.putmsg("\r\n");
-            display_scoreboard(13, mode);
+            display_scoreboard(11, mode);
             console.putmsg("d) Daily  p) Practice  .) quit : ");
         }
 
