@@ -372,19 +372,19 @@ function display_scoreboard(rows, mode) {
         }
 
         // Top border
-        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "");
+        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "", p_mode=P_NOPAUSE);
 
         // Title bar (spans full width as plain text, no column separators)
-        console.putmsg("\xb3" + CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\xb3" + "");
+        console.putmsg("\xb3" + CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\xb3" + "", p_mode=P_NOPAUSE);
 
         // Separator under title
-        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "");
+        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "", p_mode=P_NOPAUSE);
 
         // Header row
-        console.putmsg(buildRow("Rank", "Name", "Win%", "Max Streak") + "");
+        console.putmsg(buildRow("Rank", "Name", "Win%", "Max Streak") + "", p_mode=P_NOPAUSE);
 
         // Header separator
-        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "");
+        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "", p_mode=P_NOPAUSE);
 
         // Data rows - pad out to `rows` height even if fewer players exist
         var i;
@@ -396,18 +396,18 @@ function display_scoreboard(rows, mode) {
                     entry.alias,
                     entry.winPct + "%",
                     "" + entry.maxStreak
-                ) + "");
+                ) + "", p_mode=P_NOPAUSE);
             } else {
-                console.putmsg(buildRow("", "", "", "") + "");
+                console.putmsg(buildRow("", "", "", "") + "", p_mode=P_NOPAUSE);
             }
         }
 
         // Bottom border
-        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "");
+        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "", p_mode=P_NOPAUSE);
     }
     else {
         // 80-column layout placeholder - not yet implemented
-        console.putmsg("Scoreboard not yet available in this mode.\n");
+        console.putmsg("Scoreboard not yet available in this mode.\n", p_mode=P_NOPAUSE);
     }
 }
 
@@ -417,10 +417,10 @@ function startWordle(mode) {
         console.clear();
         if (mode === "40") {
 	          console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
-            console.putmsg("\n");
-	          console.putmsg(centerText("Welcome to Wordle!",39)+"\n");
-	          console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 39) + "\n");
-            console.putmsg("\n");
+            console.putmsg("\n", p_mode=P_NOPAUSE);
+	          console.putmsg(centerText("Welcome to Wordle!",39)+"\n", p_mode=P_NOPAUSE);
+	          console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 39) + "\n", p_mode=P_NOPAUSE);
+            console.putmsg("\n", p_mode=P_NOPAUSE);
             display_scoreboard(7, mode);
             console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
         }
