@@ -417,7 +417,7 @@ function startWordle(mode) {
 	        console.putmsg(centerText("Welcome to Wordle!",40), p_mode=P_NOPAUSE);
 	        console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40), p_mode=P_NOPAUSE);
             console.putmsg("\n", p_mode=P_NOPAUSE);
-            scoreboard_lines = generate_scoreboard(7, mode);
+            var scoreboard_lines = generate_scoreboard(7, mode);
             for (i = 0; i < scoreboard_lines.length; i++) {
                 console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
             }
@@ -425,8 +425,8 @@ function startWordle(mode) {
         else {
             console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
             console.putmsg("\n", p_mode=P_NOPAUSE);
-            intro_page_lines = [centerText("Welcome to Wordle!",40), centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40)];
-            scoreboard_lines = generate_scoreboard(7, mode);
+            var intro_page_lines = [centerText("Welcome to Wordle!",40), centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40)];
+            var scoreboard_lines = generate_scoreboard(7, mode);
             for (i = 0; i < scoreboard_lines.length; i++) {
                 if(intro_page_lines[i]) {
                     console.putmsg(intro_page_lines[i]+scoreboard_lines[i], p_mode=P_NOPAUSE);
