@@ -423,6 +423,7 @@ function startWordle(mode) {
             for (i = 0; i < scoreboard_lines.length; i++) {
                 console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
             }
+            console.putmsg("\n", p_mode=P_NOPAUSE);
         }
         else {
             console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
@@ -440,7 +441,7 @@ function startWordle(mode) {
             
         }
 
-        console.putmsg("\n", p_mode=P_NOPAUSE);
+        
         console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
         choice = console.getstr(1, K_UPPER);
 
