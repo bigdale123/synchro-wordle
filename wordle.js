@@ -121,7 +121,7 @@ function playWordle(mode, game_mode) {
         }
         else {
             word = getDailyWord();
-            console.putmsg(word + "\n");
+            // console.putmsg(word + "\n");
         }
     }
     else if (game_mode === "practice") {
