@@ -405,6 +405,8 @@ function generate_scoreboard(rows) {
 
     // Bottom border
     lines.push(borderLine("\xc0", "\xc1", "\xd9"));
+
+    return lines;
 }
 
 function startWordle(mode) {
