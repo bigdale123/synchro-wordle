@@ -314,101 +314,97 @@ function centerText(str, width) {
     return repeatChar(" ", leftPad) + str + repeatChar(" ", rightPad);
 }
 
-function display_scoreboard(rows, mode) {
-    // scoreboard can be "rows" tall.
+function generate_scoreboard(rows) {
+    // scoreboard can be "rows" tall, will always be 40 columns
     var stats = loadStats();
     var CTRL_A = "\x01";
 
-    if (mode === "40") {
-        var RANK_W = 4;
-        var NAME_W = 9;
-        var PCT_W = 4;
-        var MAX_STREAK_W = 10;
+    var RANK_W = 4;
+    var NAME_W = 9;
+    var PCT_W = 4;
+    var MAX_STREAK_W = 10;
+    
+    var lines = [];
 
-        // Convert stats object into a sortable array
-        var entries = [];
-        var alias;
-        for (alias in stats) {
-            if (stats.hasOwnProperty(alias)) {
-                var s = stats[alias];
-                var totalGames = s.wins + s.losses;
-                var winPct = (totalGames > 0) ? Math.round((s.wins / totalGames) * 100) : 0;
-                entries.push({
-                    alias: alias,
-                    winPct: winPct,
-                    streak: s.streak,
-                    maxStreak: s.maxStreak
-                });
-            }
+    // Convert stats object into a sortable array
+    var entries = [];
+    var alias;
+    for (alias in stats) {
+        if (stats.hasOwnProperty(alias)) {
+            var s = stats[alias];
+            var totalGames = s.wins + s.losses;
+            var winPct = (totalGames > 0) ? Math.round((s.wins / totalGames) * 100) : 0;
+            entries.push({
+                alias: alias,
+                winPct: winPct,
+                streak: s.streak,
+                maxStreak: s.maxStreak
+            });
         }
-
-        // Sort descending by win percentage
-        entries.sort(function(a, b) {
-            return b.winPct - a.winPct;
-        });
-
-        
-
-        // Helper to build a horizontal border segment
-        function borderLine(left, mid, right) {
-            var line = left;
-            line += repeatChar("\xc4", RANK_W + 2);
-            line += mid;
-            line += repeatChar("\xc4", NAME_W + 2);
-            line += mid;
-            line += repeatChar("\xc4", PCT_W + 2);
-            line += mid;
-            line += repeatChar("\xc4", MAX_STREAK_W + 2);
-            line += right;
-            return line;
-        }
-
-        // Helper to build one row's worth of cells, given raw display values
-        function buildRow(rankStr, nameStr, pctStr, maxStreakStr) {
-            return "\xb3 " + padRight(rankStr, RANK_W) + " \xb3 " +
-                   padRight(nameStr, NAME_W) + " \xb3 " +
-                   padLeft(pctStr, PCT_W) + " \xb3 " +
-                   padLeft(maxStreakStr, MAX_STREAK_W) + " \xb3";
-        }
-
-        // Top border
-        console.putmsg(borderLine("\xda", "\xc4", "\xbf") + "", p_mode=P_NOPAUSE);
-
-        // Title bar (spans full width as plain text, no column separators)
-        console.putmsg("\xb3" + CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\xb3" + "", p_mode=P_NOPAUSE);
-
-        // Separator under title
-        console.putmsg(borderLine("\xc3", "\xc2", "\xb4") + "", p_mode=P_NOPAUSE);
-
-        // Header row
-        console.putmsg(buildRow("Rank", "Name", "Win%", "Max Streak") + "", p_mode=P_NOPAUSE);
-
-        // Header separator
-        console.putmsg(borderLine("\xc3", "\xc5", "\xb4") + "", p_mode=P_NOPAUSE);
-
-        // Data rows - pad out to `rows` height even if fewer players exist
-        var i;
-        for (i = 0; i < rows; i++) {
-            if (i < entries.length) {
-                var entry = entries[i];
-                console.putmsg(buildRow(
-                    "" + (i + 1),
-                    entry.alias,
-                    entry.winPct + "%",
-                    "" + entry.maxStreak
-                ) + "", p_mode=P_NOPAUSE);
-            } else {
-                console.putmsg(buildRow("", "", "", "") + "", p_mode=P_NOPAUSE);
-            }
-        }
-
-        // Bottom border
-        console.putmsg(borderLine("\xc0", "\xc1", "\xd9") + "", p_mode=P_NOPAUSE);
     }
-    else {
-        // 80-column layout placeholder - not yet implemented
-        console.putmsg("Scoreboard not yet available in this mode.\n", p_mode=P_NOPAUSE);
+
+    // Sort descending by win percentage
+    entries.sort(function(a, b) {
+        return b.winPct - a.winPct;
+    });
+
+    
+
+    // Helper to build a horizontal border segment
+    function borderLine(left, mid, right) {
+        var line = left;
+        line += repeatChar("\xc4", RANK_W + 2);
+        line += mid;
+        line += repeatChar("\xc4", NAME_W + 2);
+        line += mid;
+        line += repeatChar("\xc4", PCT_W + 2);
+        line += mid;
+        line += repeatChar("\xc4", MAX_STREAK_W + 2);
+        line += right;
+        return line;
     }
+
+    // Helper to build one row's worth of cells, given raw display values
+    function buildRow(rankStr, nameStr, pctStr, maxStreakStr) {
+        return "\xb3 " + padRight(rankStr, RANK_W) + " \xb3 " +
+                padRight(nameStr, NAME_W) + " \xb3 " +
+                padLeft(pctStr, PCT_W) + " \xb3 " +
+                padLeft(maxStreakStr, MAX_STREAK_W) + " \xb3";
+    }
+
+    // Top border
+    lines.push(borderLine("\xda", "\xc4", "\xbf"));
+
+    // Title bar (spans full width as plain text, no column separators)
+    lines.push("\xb3" + CTRL_A + "N" + CTRL_A + "H" + centerText("Wordle Scoreboard", 38) + CTRL_A + "N" + "\xb3");
+
+    // Separator under title
+    lines.push(borderLine("\xc3", "\xc2", "\xb4"));
+
+    // Header row
+    lines.push(buildRow("Rank", "Name", "Win%", "Max Streak"));
+
+    // Header separator
+    lines.push(borderLine("\xc3", "\xc5", "\xb4"));
+
+    // Data rows - pad out to `rows` height even if fewer players exist
+    var i;
+    for (i = 0; i < rows; i++) {
+        if (i < entries.length) {
+            var entry = entries[i];
+            lines.push(buildRow(
+                "" + (i + 1),
+                entry.alias,
+                entry.winPct + "%",
+                "" + entry.maxStreak
+            ));
+        } else {
+            lines.push(buildRow("", "", "", ""));
+        }
+    }
+
+    // Bottom border
+    lines.push(borderLine("\xc0", "\xc1", "\xd9"));
 }
 
 function startWordle(mode) {
@@ -421,21 +417,30 @@ function startWordle(mode) {
 	        console.putmsg(centerText("Welcome to Wordle!",40), p_mode=P_NOPAUSE);
 	        console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40), p_mode=P_NOPAUSE);
             console.putmsg("\n", p_mode=P_NOPAUSE);
-            display_scoreboard(7, mode);
-            console.putmsg("\n", p_mode=P_NOPAUSE);
-            console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
+            scoreboard_lines = generate_scoreboard(7, mode);
+            for (i = 0; i < scoreboard_lines.length; i++) {
+                console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
+            }
         }
         else {
             console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
             console.putmsg("\n", p_mode=P_NOPAUSE);
-	        console.putmsg(centerText("Welcome to Wordle!",40), p_mode=P_NOPAUSE);
-	        console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40), p_mode=P_NOPAUSE);
-            console.putmsg("\n", p_mode=P_NOPAUSE);
-            // display_scoreboard(7, mode);
-            console.putmsg("\n", p_mode=P_NOPAUSE);
-            console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
+            intro_page_lines = [centerText("Welcome to Wordle!",40), centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40)];
+            scoreboard_lines = generate_scoreboard(7, mode);
+            for (i = 0; i < scoreboard_lines.length; i++) {
+                if(intro_page_lines[i]) {
+                    console.putmsg(intro_page_lines[i]+scoreboard_lines[i], p_mode=P_NOPAUSE);
+                }
+                else {
+                    console.putmsg(centerText("",40)+scoreboard_lines[i], p_mode=P_NOPAUSE);
+                }
+                
+            }
+            
         }
 
+        console.putmsg("\n", p_mode=P_NOPAUSE);
+        console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
         choice = console.getstr(1, K_UPPER);
 
         if (choice === "D"){
