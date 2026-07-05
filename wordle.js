@@ -429,6 +429,7 @@ function startWordle(mode) {
             console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
             var intro_page_lines = [centerText("",40), centerText("Welcome to Wordle!",40), centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40)];
             var scoreboard_lines = generate_scoreboard(5, mode);
+            console.putmsg("\n", p_mode=P_NOPAUSE);
             for (i = 0; i < scoreboard_lines.length; i++) {
                 if(intro_page_lines[i]) {
                     console.putmsg(intro_page_lines[i]+scoreboard_lines[i], p_mode=P_NOPAUSE);
