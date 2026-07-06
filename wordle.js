@@ -1,12 +1,38 @@
 // Simple text-based Wordle game for Synchronet BBSes
 // Supports 40-column and 80-column modes
 // Rewritten for compatibility with older Synchronet JS engine (no ES6 features)
-
 load("sbbsdefs.js")
 
+
+
+/////////////////////////////////////////
+// Defaults
+//
+// Generally shouldn't need to be changed
+/////////////////////////////////////////
 var MAX_ATTEMPTS = 6;
 var WORD_LENGTH = 5;
 var STATS_FILE = system.data_dir + "wordle_stats.json"
+// Load word list from file
+var WORDS = [];
+var word_file = new File(js.exec_dir + "word-bank.csv");
+if (word_file.open("r")) {
+    WORDS = word_file.readAll();
+    word_file.close();
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////
+// Helper Functions
+//
+// Small functions that do little tasks
+/////////////////////////////////////////
+
 
 function loadStats() {
     var f = new File(STATS_FILE);
@@ -28,14 +54,6 @@ function saveStats(stats) {
         f.write(JSON.stringify(stats));
         f.close();
     }
-}
-
-// Load word list from file
-var WORDS = [];
-var word_file = new File(js.exec_dir + "word-bank.csv");
-if (word_file.open("r")) {
-    WORDS = word_file.readAll();
-    word_file.close();
 }
 
 // Function to check if a guess matches the word
@@ -67,6 +85,122 @@ function makeEmptyBoard() {
     }
     return board;
 }
+
+function check_if_streak_valid(last_date_played) {
+    if (!last_date_played) { // edge case for new players
+        return false;
+    }
+    // Dates should be handled this way to account for end of month rollovers
+    var last_date = new Date(last_date_played + "T00:00:00");
+    var today = new Date(get_todays_date() + "T00:00:00");
+
+    var msPerDay = 24 * 60 * 60 * 1000;
+    var delta_days = Math.round((today-last_date) / msPerDay);
+
+    if (delta_days === 1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// Determine screen mode (40 or 80 columns)
+function getScreenMode() {
+    var screenWidth = console.screen_columns;
+    return (screenWidth >= 80) ? "80" : "40";
+}
+
+function get_todays_date() {
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    if (month < 10) { 
+        month = "0"+month;
+    }
+    if (day < 10) {
+        day = "0"+day;
+    }
+    return ""+year+"-"+month+"-"+day;
+}
+
+function getDailyWord() {
+    var today = get_todays_date().split("-");
+    var date = new Date(parseInt(today[0]), parseInt(today[1]) - 1, parseInt(today[2]));
+    var epoch = new Date(2020, 0, 1);
+    var msPerDay = 24 * 60 * 60 * 1000;
+    var seed = Math.round((date - epoch) / msPerDay);
+    var index = seed % WORDS.length;
+    return WORDS[index].toUpperCase();
+}
+
+function check_player_can_play(stats) {
+    var todays_date = get_todays_date();
+    if (stats[user.alias] && stats[user.alias].lastPlayed === todays_date) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+// Helper to pad a string to fixed width, left-aligned
+function padRight(str, width) {
+    str = "" + str;
+    if (str.length > width) {
+        return str.substring(0, width);
+    }
+    while (str.length < width) {
+        str += " ";
+    }
+    return str;
+}
+
+// Helper to pad a string to fixed width, right-aligned
+function padLeft(str, width) {
+    str = "" + str;
+    if (str.length > width) {
+        return str.substring(0, width);
+    }
+    while (str.length < width) {
+        str = " " + str;
+    }
+    return str;
+}
+
+function repeatChar(ch, count) {
+    var out = "";
+    var i;
+    for (i = 0; i < count; i++) {
+        out += ch;
+    }
+    return out;
+}
+
+function centerText(str, width) {
+    str = "" + str;
+    if (str.length >= width) {
+        return str.substring(0, width);
+    }
+    var totalPad = width - str.length;
+    var leftPad = Math.floor(totalPad / 2);
+    var rightPad = totalPad - leftPad;
+    return repeatChar(" ", leftPad) + str + repeatChar(" ", rightPad);
+}
+
+
+
+
+
+
+
+////////////////////////////////////////////////////
+// "Big Boy" Functions
+//
+// These are main functions, such as the main menu,
+//    Gameplay, etc.
+////////////////////////////////////////////////////
 
 // Function to display the game board
 function displayBoard(board, currentRow, mode, ANSWERS) {
@@ -211,109 +345,6 @@ function playWordle(mode, game_mode) {
     }
 }
 
-function check_if_streak_valid(last_date_played) {
-    if (!last_date_played) { // edge case for new players
-        return false;
-    }
-    // Dates should be handled this way to account for end of month rollovers
-    var last_date = new Date(last_date_played + "T00:00:00");
-    var today = new Date(get_todays_date() + "T00:00:00");
-
-    var msPerDay = 24 * 60 * 60 * 1000;
-    var delta_days = Math.round((today-last_date) / msPerDay);
-
-    if (delta_days === 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-// Determine screen mode (40 or 80 columns)
-function getScreenMode() {
-    var screenWidth = console.screen_columns;
-    return (screenWidth >= 80) ? "80" : "40";
-}
-
-function get_todays_date() {
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    if (month < 10) { 
-        month = "0"+month;
-    }
-    if (day < 10) {
-        day = "0"+day;
-    }
-    return ""+year+"-"+month+"-"+day;
-}
-
-function getDailyWord() {
-    var today = get_todays_date().split("-");
-    var date = new Date(parseInt(today[0]), parseInt(today[1]) - 1, parseInt(today[2]));
-    var epoch = new Date(2020, 0, 1);
-    var msPerDay = 24 * 60 * 60 * 1000;
-    var seed = Math.round((date - epoch) / msPerDay);
-    var index = seed % WORDS.length;
-    return WORDS[index].toUpperCase();
-}
-
-function check_player_can_play(stats) {
-    var todays_date = get_todays_date();
-    if (stats[user.alias] && stats[user.alias].lastPlayed === todays_date) {
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-// Helper to pad a string to fixed width, left-aligned
-function padRight(str, width) {
-    str = "" + str;
-    if (str.length > width) {
-        return str.substring(0, width);
-    }
-    while (str.length < width) {
-        str += " ";
-    }
-    return str;
-}
-
-// Helper to pad a string to fixed width, right-aligned
-function padLeft(str, width) {
-    str = "" + str;
-    if (str.length > width) {
-        return str.substring(0, width);
-    }
-    while (str.length < width) {
-        str = " " + str;
-    }
-    return str;
-}
-
-function repeatChar(ch, count) {
-    var out = "";
-    var i;
-    for (i = 0; i < count; i++) {
-        out += ch;
-    }
-    return out;
-}
-
-function centerText(str, width) {
-    str = "" + str;
-    if (str.length >= width) {
-        return str.substring(0, width);
-    }
-    var totalPad = width - str.length;
-    var leftPad = Math.floor(totalPad / 2);
-    var rightPad = totalPad - leftPad;
-    return repeatChar(" ", leftPad) + str + repeatChar(" ", rightPad);
-}
-
 function generate_scoreboard(rows) {
     // scoreboard can be "rows" tall, will always be 40 columns
     var stats = loadStats();
@@ -410,15 +441,20 @@ function generate_scoreboard(rows) {
 }
 
 function startWordle(mode) {
+    // Mainly responsible for the Main Menu, but is also the entry point of the game.
+    // Takes in a "mode" that represents whether the user playing is using a 40 or 80 column display. 
     var choice = "";
     while (choice !== ".") {
         console.clear();
         if (mode === "40") {
 	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
-            console.putmsg("\n", p_mode=P_NOPAUSE);
-	        console.putmsg(centerText("Welcome to Wordle!",40), p_mode=P_NOPAUSE);
-	        console.putmsg(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40), p_mode=P_NOPAUSE);
-            console.putmsg("\n", p_mode=P_NOPAUSE);
+            var intro_page_lines = [];
+            intro_page_lines.push(centerText("",40));
+            intro_page_lines.push(centerText("Welcome to Wordle!",40));
+            intro_page_lines.push(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40));
+            for (i = 0; i < intro_page_lines.length; i++) {
+                console.putmsg(intro_page_lines[i], p_mode=P_NOPAUSE);
+            }
             var scoreboard_lines = generate_scoreboard(5, mode);
             for (i = 0; i < scoreboard_lines.length; i++) {
                 console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
@@ -427,7 +463,10 @@ function startWordle(mode) {
         }
         else {
             console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
-            var intro_page_lines = [centerText("",40), centerText("Welcome to Wordle!",40), centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40)];
+            var intro_page_lines = [];
+            intro_page_lines.push(centerText("",40));
+            intro_page_lines.push(centerText("Welcome to Wordle!",40));
+            intro_page_lines.push(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40));
             var scoreboard_lines = generate_scoreboard(5, mode);
             console.putmsg("\n", p_mode=P_NOPAUSE);
             for (i = 0; i < scoreboard_lines.length; i++) {
@@ -455,6 +494,17 @@ function startWordle(mode) {
     }
 }
 
-// Start the game
+
+
+
+
+
+
+////////////////////////////
+// Main()
+// 
+// Starts the Game
+////////////////////////////
+
 var mode = getScreenMode();
 startWordle(mode);
