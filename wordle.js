@@ -251,9 +251,9 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
         midRow += CTRL_A + "N";
         botRow += CTRL_A + "N";
 
-        console.putmsg(centerText(topRow, 40));
-        console.putmsg(centerText(midRow, 40));
-        console.putmsg(centerText(botRow, 40));
+        console.putmsg(centerText(topRow, 39)+"\n");
+        console.putmsg(centerText(midRow, 39)+"\n");
+        console.putmsg(centerText(botRow, 39)+"\n");
     }
 }
 
