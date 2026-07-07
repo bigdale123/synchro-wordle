@@ -282,12 +282,14 @@ function playWordle(mode, game_mode) {
     var currentRow = 0;
     var gameOver = false; 
 
+
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
+        console.clear()
         displayBoard(board, currentRow, mode, ANSWERS);
 
         var guess = "";
         while (guess.length !== WORD_LENGTH) {
-            console.putmsg("Enter your " + WORD_LENGTH + "-letter guess:\n");
+            console.putmsg("Enter your " + WORD_LENGTH + "-letter guess: ");
             guess = console.getstr(WORD_LENGTH, K_UPPER);
             if (guess === null) {
                 guess = ""; // user disconnected or aborted input
