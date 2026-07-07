@@ -209,34 +209,51 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
     var i, j;
 
     for (i = 0; i < MAX_ATTEMPTS; i++) {
-        var row = "";
+        var topRow = "";
+        var midRow = "";
+        var botRow = "";
+
         if (i < currentRow) {
             // Display filled rows
             for (j = 0; j < WORD_LENGTH; j++) {
-                var current_letter = ANSWERS[i][j]
+                var current_letter = ANSWERS[i][j];
+                var colorCode = "";
+
                 switch (board[i][j]) {
                     case "G":
-                        row += CTRL_A + "K" + CTRL_A + "2" + " " + current_letter + " "; // Green block
+                        colorCode = CTRL_A + "K" + CTRL_A + "2"; // Green
                         break;
                     case "Y":
-                        row += CTRL_A + "K" + CTRL_A + "3" + " " + current_letter + " "; // Yellow block
+                        colorCode = CTRL_A + "K" + CTRL_A + "3"; // Yellow
                         break;
                     case "B":
-                        row += CTRL_A + "K" + CTRL_A + "7" + " " + current_letter + " "; // White block
+                        colorCode = CTRL_A + "K" + CTRL_A + "7"; // White
                         break;
                     default:
-                        row += " ";
+                        colorCode = CTRL_A + "N";
                         break;
                 }
+
+                topRow += colorCode + "XXX";
+                midRow += colorCode + "X" + current_letter + "X";
+                botRow += colorCode + "XXX";
             }
         } else {
-            // Display empty rows
+            // Display empty rows - light shade block, no color coding
             for (j = 0; j < WORD_LENGTH; j++) {
-                row += "\xb0\xb0\xb0"; // light shade block
+                topRow += "\xb0\xb0\xb0";
+                midRow += "\xb0\xb0\xb0";
+                botRow += "\xb0\xb0\xb0";
             }
         }
-        row += CTRL_A + "N"; // Reset color
-        console.putmsg(row + "\n");
+
+        topRow += CTRL_A + "N";
+        midRow += CTRL_A + "N";
+        botRow += CTRL_A + "N";
+
+        console.putmsg(topRow + "\n");
+        console.putmsg(midRow + "\n");
+        console.putmsg(botRow + "\n");
     }
 }
 
