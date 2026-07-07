@@ -180,16 +180,19 @@ function repeatChar(ch, count) {
 
 function centerText(str, width) {
     str = "" + str;
-    if (str.length >= width) {
-        return str.substring(0, width);
+    var vLen = visibleLength(str);
+    if (vLen >= width) {
+        return str; // don't truncate blindly - substring would cut mid-codepair
     }
-    var totalPad = width - str.length;
+    var totalPad = width - vLen;
     var leftPad = Math.floor(totalPad / 2);
     var rightPad = totalPad - leftPad;
     return repeatChar(" ", leftPad) + str + repeatChar(" ", rightPad);
 }
 
-
+function visibleLength(str) {
+    return str.replace(/\x01./g, "").length;
+}
 
 
 
