@@ -234,9 +234,9 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
                         break;
                 }
 
-                topRow += colorCode + "XXX";
-                midRow += colorCode + "X" + current_letter + "X";
-                botRow += colorCode + "XXX";
+                topRow += colorCode + "   ";
+                midRow += colorCode + " " + current_letter + " ";
+                botRow += colorCode + "   ";
             }
         } else {
             // Display empty rows - light shade block, no color coding
