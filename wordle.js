@@ -216,13 +216,13 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
                 var current_letter = ANSWERS[i][j]
                 switch (board[i][j]) {
                     case "G":
-                        row += CTRL_A + "K" + CTRL_A + "2" + current_letter; // Green block
+                        row += CTRL_A + "K" + CTRL_A + "2" + " " + current_letter + " "; // Green block
                         break;
                     case "Y":
-                        row += CTRL_A + "K" + CTRL_A + "3" + current_letter; // Yellow block
+                        row += CTRL_A + "K" + CTRL_A + "3" + " " + current_letter + " "; // Yellow block
                         break;
                     case "B":
-                        row += CTRL_A + "K" + CTRL_A + "7" + current_letter; // White block
+                        row += CTRL_A + "K" + CTRL_A + "7" + " " + current_letter + " "; // White block
                         break;
                     default:
                         row += " ";
@@ -232,7 +232,7 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
         } else {
             // Display empty rows
             for (j = 0; j < WORD_LENGTH; j++) {
-                row += "\xb0"; // light shade block
+                row += "\xb0\xb0\xb0"; // light shade block
             }
         }
         row += CTRL_A + "N"; // Reset color
