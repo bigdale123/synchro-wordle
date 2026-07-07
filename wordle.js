@@ -251,9 +251,9 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
         midRow += CTRL_A + "N";
         botRow += CTRL_A + "N";
 
-        console.putmsg(topRow + "\n");
-        console.putmsg(midRow + "\n");
-        console.putmsg(botRow + "\n");
+        console.putmsg(centerText(topRow, 40));
+        console.putmsg(centerText(midRow, 40));
+        console.putmsg(centerText(botRow, 40));
     }
 }
 
@@ -285,7 +285,9 @@ function playWordle(mode, game_mode) {
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
+        console.putmsg("\n");
         displayBoard(board, currentRow, mode, ANSWERS);
+        console.putmsg("\n");
 
         var guess = "";
         while (guess.length !== WORD_LENGTH) {
@@ -317,12 +319,14 @@ function playWordle(mode, game_mode) {
         currentRow++;
 
         if (allGreen) {
+            console.clear();
             console.putmsg("Congratulations! You guessed the word: " + word + "\n");
             gameOver = true;
         }
     }
 
     if (!gameOver) {
+        console.clear();
         console.putmsg("Game over! The word was: " + word + "\n");
     }
 
