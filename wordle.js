@@ -305,7 +305,7 @@ function playWordle(mode, game_mode) {
     var board_lines = [];
 
     var legend_lines = [];
-    legend_lines.push(CTRL_A + "K" + CTRL_A + "2" + "[X]" + CTRL_A + "N" + " Correct");
+    legend_lines.push(CTRL_A + "K" + CTRL_A + "2" + "(X)" + CTRL_A + "N" + " Correct");
     legend_lines.push("");
     legend_lines.push(CTRL_A + "K" + CTRL_A + "3" + "!X!" + CTRL_A + "N" + " Misplaced");
     legend_lines.push("");
