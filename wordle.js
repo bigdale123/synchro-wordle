@@ -543,7 +543,7 @@ function startWordle(mode) {
         }
         else if (choice === "S") {
             console.clear();
-            var scoreboard_lines = generate_scoreboard(20, mode);
+            var scoreboard_lines = generate_scoreboard(15, mode);
             for (i = 0; i < scoreboard_lines.length; i++) {
                 console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
             }
