@@ -194,6 +194,12 @@ function visibleLength(str) {
     return str.replace(/\x01./g, "").length;
 }
 
+function generate_intro_card(){
+    var intro_page_lines = [];
+    intro_page_lines.push(centerText("",40));
+    intro_page_lines.push(centerText("Welcome to Wordle!",40));
+    intro_page_lines.push(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40));
+}
 
 
 
@@ -310,7 +316,6 @@ function playWordle(mode, game_mode) {
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
-        console.putmsg(USER_COLOR)
         console.putmsg("\n");
         displayBoard(board, currentRow, mode, ANSWERS);
         console.putmsg("\n");
@@ -493,21 +498,15 @@ function startWordle(mode) {
     // Mainly responsible for the Main Menu, but is also the entry point of the game.
     // Takes in a "mode" that represents whether the user playing is using a 40 or 80 column display. 
     var choice = "";
-    while (choice !== ".") {
+    while (choice !== "Q") {
         console.clear();
         if (mode === "40") {
 	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
-            var intro_page_lines = [];
-            intro_page_lines.push(centerText("",40));
-            intro_page_lines.push(centerText("Welcome to Wordle!",40));
-            intro_page_lines.push(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40));
+            intro_page_lines = generate_intro_card();
             for (i = 0; i < intro_page_lines.length; i++) {
                 console.putmsg(intro_page_lines[i], p_mode=P_NOPAUSE);
             }
-            var scoreboard_lines = generate_scoreboard(5, mode);
-            for (i = 0; i < scoreboard_lines.length; i++) {
-                console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
-            }
+            
             console.putmsg("\n", p_mode=P_NOPAUSE);
         }
         else {
@@ -531,7 +530,7 @@ function startWordle(mode) {
         }
 
         
-        console.putmsg("d) Daily  p) Practice  .) quit : ", p_mode=P_NOPAUSE);
+        console.putmsg("[D]aily [P]ractice [S]core [Q]uit > ", p_mode=P_NOPAUSE);
         choice = console.getstr(1, K_UPPER);
 
         if (choice === "D"){
@@ -539,6 +538,13 @@ function startWordle(mode) {
         }
         else if (choice === "P") {
             playWordle(mode, "practice");
+        }
+        else if (choice === "S") {
+            console.clear();
+            var scoreboard_lines = generate_scoreboard(20, mode);
+            for (i = 0; i < scoreboard_lines.length; i++) {
+                console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
+            }
         }
     }
 }
