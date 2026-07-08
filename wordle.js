@@ -13,6 +13,11 @@ load("sbbsdefs.js")
 var MAX_ATTEMPTS = 6;
 var WORD_LENGTH = 5;
 var STATS_FILE = system.data_dir + "wordle_stats.json"
+var CTRL_A = "\x01";
+var NEWLINE = CTRL_A + "[" + CTRL_A + "]";
+
+
+
 // Load word list from file
 var WORDS = [];
 var word_file = new File(js.exec_dir + "word-bank.csv");
@@ -60,7 +65,7 @@ function saveStats(stats) {
 function checkGuess(guess, word) {
     var result = [];
     var i;
-    for (i = 0; i < WORD_LENGTH; i++) {
+    for (var i = 0; i < WORD_LENGTH; i++) {
         if (guess.charAt(i) === word.charAt(i)) {
             result.push("G"); // Green - correct letter in correct position
         } else if (word.indexOf(guess.charAt(i)) !== -1) {
@@ -76,7 +81,7 @@ function checkGuess(guess, word) {
 function makeEmptyBoard() {
     var board = [];
     var i, j;
-    for (i = 0; i < MAX_ATTEMPTS; i++) {
+    for (var i = 0; i < MAX_ATTEMPTS; i++) {
         var row = [];
         for (j = 0; j < WORD_LENGTH; j++) {
             row.push(" ");
@@ -172,7 +177,7 @@ function padLeft(str, width) {
 function repeatChar(ch, count) {
     var out = "";
     var i;
-    for (i = 0; i < count; i++) {
+    for (var i = 0; i < count; i++) {
         out += ch;
     }
     return out;
@@ -222,12 +227,11 @@ function generate_intro_card(){
 
 // Function to display the game board
 function generateBoard(board, currentRow, ANSWERS) {
-    var CTRL_A = "\x01";
     var columns = 40;
     var lines = [];
     var i, j;
 
-    for (i = 0; i < MAX_ATTEMPTS; i++) {
+    for (var i = 0; i < MAX_ATTEMPTS; i++) {
         var topRow = "";
         var midRow = "";
         var botRow = "";
@@ -294,13 +298,12 @@ function playWordle(mode, game_mode) {
     
     if (game_mode === "daily") {
         if (!check_player_can_play(stats)) {
-            console.putmsg("You've already played today!\n");
-            console.putmsg("You can try practice mode though!\n"); 
+            console.putmsg("You've already played today!" + NEWLINE);
+            console.putmsg("You can try practice mode though!" + NEWLINE); 
             return;
         }
         else {
             word = getDailyWord();
-            // console.putmsg(word + "\n");
         }
     }
     else if (game_mode === "practice") {
@@ -320,17 +323,17 @@ function playWordle(mode, game_mode) {
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
-        console.putmsg("\n");
+        console.putmsg(NEWLINE);
         board_lines = generateBoard(board, currentRow, ANSWERS);
-        for (i = 0; i < board_lines.length; i++) {
+        for (var i = 0; i < board_lines.length; i++) {
             if (legend_lines[i]) {
-                console.putmsg(" "+board_lines[i]+" "+legend_lines[i]+"\n");
+                console.putmsg(" " + board_lines[i] + " " + legend_lines[i] + NEWLINE);
             }
             else {
-                console.putmsg(" "+board_lines[i]+"\n");
+                console.putmsg(" " + board_lines[i] + NEWLINE);
             }
         }
-        console.putmsg("\n");
+        console.putmsg(NEWLINE);
 
         var guess = "";
         while (guess.length !== WORD_LENGTH) {
@@ -341,7 +344,7 @@ function playWordle(mode, game_mode) {
             }
 
             if (guess.length !== WORD_LENGTH) {
-                console.putmsg("Please enter exactly " + WORD_LENGTH + " letters.\n");
+                console.putmsg("Please enter exactly " + WORD_LENGTH + " letters." + NEWLINE);
             }
         }
         ANSWERS.push(guess);
@@ -352,7 +355,7 @@ function playWordle(mode, game_mode) {
 
         var allGreen = true;
         var i;
-        for (i = 0; i < result.length; i++) {
+        for (var i = 0; i < result.length; i++) {
             if (result[i] !== "G") {
                 allGreen = false;
                 break;
@@ -363,24 +366,24 @@ function playWordle(mode, game_mode) {
 
         if (allGreen) {
             console.clear();
-            console.putmsg("Winner! You guessed the word: " + word + "\n");
+            console.putmsg("Winner! You guessed the word: " + word + NEWLINE);
             gameOver = true;
         }
     }
 
     if (!gameOver) {
         console.clear();
-        console.putmsg("Game over! The word was: " + word + "\n");
+        console.putmsg("Game over! The word was: " + word + NEWLINE);
     }
 
-    console.putmsg("\n");
+    console.putmsg(NEWLINE);
     board_lines = generateBoard(board, currentRow, ANSWERS);
-    for (i = 0; i < board_lines.length; i++) {
+    for (var i = 0; i < board_lines.length; i++) {
         if (legend_lines[i]) {
-            console.putmsg(" "+board_lines[i]+" "+legend_lines[i]+"\n");
+            console.putmsg(" " + board_lines[i] + " " + legend_lines[i] + NEWLINE);
         }
         else {
-            console.putmsg(" "+board_lines[i]+"\n");
+            console.putmsg(" " + board_lines[i] + NEWLINE);
         }
     }
    
@@ -423,7 +426,6 @@ function playWordle(mode, game_mode) {
 function generate_scoreboard(rows) {
     // scoreboard can be "rows" tall, will always be 40 columns
     var stats = loadStats();
-    var CTRL_A = "\x01";
 
     var RANK_W = 4;
     var NAME_W = 9;
@@ -495,7 +497,7 @@ function generate_scoreboard(rows) {
 
     // Data rows - pad out to `rows` height even if fewer players exist
     var i;
-    for (i = 0; i < rows; i++) {
+    for (var i = 0; i < rows; i++) {
         if (i < entries.length) {
             var entry = entries[i];
             lines.push(buildRow(
@@ -524,23 +526,23 @@ function startWordle(mode) {
         if (mode === "40") {
 	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
             var intro_page_lines = generate_intro_card();
-            for (i = 0; i < intro_page_lines.length; i++) {
-                console.putmsg(intro_page_lines[i], p_mode=P_NOPAUSE);
+            for (var i = 0; i < intro_page_lines.length; i++) {
+                console.putmsg(intro_page_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
             }
             
-            console.putmsg("\n", p_mode=P_NOPAUSE);
+            console.putmsg(NEWLINE, p_mode=P_NOPAUSE);
         }
         else {
             console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
             var intro_page_lines = generate_intro_card();
             var scoreboard_lines = generate_scoreboard(5, mode);
-            console.putmsg("\n", p_mode=P_NOPAUSE);
-            for (i = 0; i < scoreboard_lines.length; i++) {
+            console.putmsg(NEWLINE, p_mode=P_NOPAUSE);
+            for (var i = 0; i < scoreboard_lines.length; i++) {
                 if(intro_page_lines[i]) {
-                    console.putmsg(intro_page_lines[i]+scoreboard_lines[i], p_mode=P_NOPAUSE);
+                    console.putmsg(intro_page_lines[i] + scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
                 }
                 else {
-                    console.putmsg(centerText("",40)+scoreboard_lines[i], p_mode=P_NOPAUSE);
+                    console.putmsg(centerText("",40) + scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
                 }
                 
             }
@@ -560,8 +562,8 @@ function startWordle(mode) {
         else if (choice === "S") {
             console.clear();
             var scoreboard_lines = generate_scoreboard(15, mode);
-            for (i = 0; i < scoreboard_lines.length; i++) {
-                console.putmsg(scoreboard_lines[i], p_mode=P_NOPAUSE);
+            for (var i = 0; i < scoreboard_lines.length; i++) {
+                console.putmsg(scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
             }
         }
     }
