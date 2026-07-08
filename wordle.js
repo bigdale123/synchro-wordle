@@ -224,69 +224,54 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
         var midRow = "";
         var botRow = "";
 
-        var topMonoRow = "";
-        var midMonoRow = "";
-        var botMonoRow = "";
-
         if (i < currentRow) {
             // Display filled rows
             for (j = 0; j < WORD_LENGTH; j++) {
                 var current_letter = ANSWERS[i][j];
                 var colorCode = "";
+                var indicators = [];
 
                 switch (board[i][j]) {
                     case "G":
                         colorCode = CTRL_A + "K" + CTRL_A + "2"; // Green
+                        indicators[0] = "[";
+                        indicators[1] = "]";
                         break;
                     case "Y":
                         colorCode = CTRL_A + "K" + CTRL_A + "3"; // Yellow
+                        indicators[0] = "!";
+                        indicators[1] = "!";
                         break;
                     case "B":
                         colorCode = CTRL_A + "K" + CTRL_A + "7"; // White
+                        indicators[0] = " ";
+                        indicators[1] = " ";
                         break;
                     default:
                         colorCode = CTRL_A + "N";
                         break;
                 }
                 
-                topRow += colorCode + "   ";
-                midRow += colorCode + " " + current_letter + " ";
+                topRow += colorCode + "     ";
+                midRow += colorCode + " " + indicators[0] + current_letter + indicators[1] + " ";
                 botRow += colorCode + "   ";
-
-                if(!console.term_supports(USER_COLOR)) {
-                    topMonoRow += "   ";
-                    midMonoRow += " " + current_letter + " ";
-                    botMonoRow += "   ";
-                }
             }
         } else {
             // Display empty rows - light shade block, no color coding
             for (j = 0; j < WORD_LENGTH; j++) {
-                topRow += "\xb0\xb0\xb0";
-                midRow += "\xb0\xb0\xb0";
-                botRow += "\xb0\xb0\xb0";
-
-                if(!console.term_supports(USER_COLOR)) {
-                    topMonoRow += "\xb0\xb0\xb0";
-                    midMonoRow += "\xb0\xb0\xb0";
-                    botMonoRow += "\xb0\xb0\xb0";
-                }
+                topRow += "\xb0\xb0\xb0\xb0\xb0";
+                midRow += "\xb0\xb0\xb0\xb0\xb0";
+                botRow += "\xb0\xb0\xb0\xb0\xb0";
             }
         }
 
         topRow += CTRL_A + "N";
         midRow += CTRL_A + "N";
         botRow += CTRL_A + "N";
-        if(!console.term_supports(USER_COLOR)) {
-            console.putmsg(centerText(topRow+"  "+topMonoRow, 39)+"\n");
-            console.putmsg(centerText(midRow+"  "+midMonoRow, 39)+"\n");
-            console.putmsg(centerText(botRow+"  "+botMonoRow, 39)+"\n");
-        }
-        else {
-            console.putmsg(centerText(topRow, 39)+"\n");
-            console.putmsg(centerText(midRow, 39)+"\n");
-            console.putmsg(centerText(botRow, 39)+"\n");
-        }
+        
+        console.putmsg(centerText(topRow, 39)+"\n");
+        console.putmsg(centerText(midRow, 39)+"\n");
+        console.putmsg(centerText(botRow, 39)+"\n");
     }
 }
 
