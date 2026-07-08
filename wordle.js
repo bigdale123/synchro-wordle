@@ -201,11 +201,11 @@ function generate_intro_card(){
     intro_page_lines.push(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40));
     intro_page_lines.push(centerText("",40));
     intro_page_lines.push(centerText("",40));
-    intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "2" + "(X)" + CTRL_A + "N" + " = Correct"), 40);
+    intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "2" + "(X)" + CTRL_A + "N" + " = Correct", 40));
     intro_page_lines.push(centerText("",40));
-    intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "3" + "!X!" + CTRL_A + "N" + " = Misplaced"), 40);
+    intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "3" + "!X!" + CTRL_A + "N" + " = Misplaced", 40));
     intro_page_lines.push(centerText("",40));
-    intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "7" + " X " + CTRL_A + "N" + " = Not in word"), 40);
+    intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "7" + " X " + CTRL_A + "N" + " = Not in word", 40));
 
     return intro_page_lines;
 }
