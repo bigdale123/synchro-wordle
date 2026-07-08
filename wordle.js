@@ -525,7 +525,7 @@ function startWordle(mode) {
         console.clear();
         if (mode === "40") {
 	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
-            console.writeln("Test text");
+            console.writeln("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
             console.writeln("Test text again");
             console.writeln("Test one more time");
             // var intro_page_lines = generate_intro_card();
