@@ -253,16 +253,16 @@ function generateBoard(board, currentRow, ANSWERS) {
                         break;
                 }
                 
-                topRow += colorCode + "     ";
-                midRow += colorCode + " " + indicators[0] + current_letter + indicators[1] + " ";
-                botRow += colorCode + "     ";
+                topRow += colorCode + "   ";
+                midRow += colorCode + "" + indicators[0] + current_letter + indicators[1] + "";
+                botRow += colorCode + "   ";
             }
         } else {
             // Display empty rows - light shade block, no color coding
             for (j = 0; j < WORD_LENGTH; j++) {
-                topRow += "\xb0\xb0\xb0\xb0\xb0";
-                midRow += "\xb0\xb0\xb0\xb0\xb0";
-                botRow += "\xb0\xb0\xb0\xb0\xb0";
+                topRow += "\xb0\xb0\xb0";
+                midRow += "\xb0\xb0\xb0";
+                botRow += "\xb0\xb0\xb0";
             }
         }
 
@@ -366,6 +366,7 @@ function playWordle(mode, game_mode) {
         console.putmsg("Game over! The word was: " + word + "\n");
     }
 
+    console.putmsg("\n");
     board_lines = generateBoard(board, currentRow, ANSWERS);
     for (i = 0; i < board_lines.length; i++) {
         if (legend_lines[i]) {
