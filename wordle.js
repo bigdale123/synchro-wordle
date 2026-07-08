@@ -529,13 +529,13 @@ function startWordle(mode) {
             intro_page_lines.push(centerText("",40));
             intro_page_lines.push(centerText("Welcome to Wordle!",40));
             intro_page_lines.push(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40));
-            intro_page_lines.push("");
-            intro_page_lines.push("");
-            intro_page_lines.push(" " + CTRL_A + "K" + CTRL_A + "2" + "(X)" + CTRL_A + "N" + " = Correct");
-            intro_page_lines.push("");
-            intro_page_lines.push(" " + CTRL_A + "K" + CTRL_A + "3" + "!X!" + CTRL_A + "N" + " = Misplaced");
-            intro_page_lines.push("");
-            intro_page_lines.push(" " + CTRL_A + "K" + CTRL_A + "7" + " X " + CTRL_A + "N" + " = Not in word");
+            intro_page_lines.push(centerText("",40));
+            intro_page_lines.push(centerText("",40));
+            intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "2" + "(X)" + CTRL_A + "N" + " = Correct"), 40);
+            intro_page_lines.push(centerText("",40));
+            intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "3" + "!X!" + CTRL_A + "N" + " = Misplaced"));
+            intro_page_lines.push(centerText("",40));
+            intro_page_lines.push(centerText(CTRL_A + "K" + CTRL_A + "7" + " X " + CTRL_A + "N" + " = Not in word"));
             var scoreboard_lines = generate_scoreboard(5, mode);
             console.putmsg("\n", p_mode=P_NOPAUSE);
             for (i = 0; i < scoreboard_lines.length; i++) {
