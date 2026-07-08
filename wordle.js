@@ -214,9 +214,10 @@ function generate_intro_card(){
 ////////////////////////////////////////////////////
 
 // Function to display the game board
-function displayBoard(board, currentRow, mode, ANSWERS) {
+function generateBoard(board, currentRow, ANSWERS) {
     var CTRL_A = "\x01";
-    var columns = (mode === "80") ? 80 : 40;
+    var columns = 40;
+    var lines = [];
     var i, j;
 
     for (i = 0; i < MAX_ATTEMPTS; i++) {
@@ -269,10 +270,12 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
         midRow += CTRL_A + "N";
         botRow += CTRL_A + "N";
         
-        console.putmsg(centerText(topRow, 39)+"\n");
-        console.putmsg(centerText(midRow, 39)+"\n");
-        console.putmsg(centerText(botRow, 39)+"\n");
+        lines.push(topRow);
+        lines.push(midRow);
+        lines.push(botRow);
     }
+
+    return lines;
 }
 
 // Playing the Game
@@ -299,12 +302,27 @@ function playWordle(mode, game_mode) {
     var board = makeEmptyBoard();
     var currentRow = 0;
     var gameOver = false; 
+    var board_lines = [];
 
+    var legend_lines = [];
+    legend_lines.push(CTRL_A + "K" + CTRL_A + "2" + "[X]" + CTRL_A + "N" + " = Correct");
+    legend_lines.push("");
+    legend_lines.push(CTRL_A + "K" + CTRL_A + "2" + "!X!" + CTRL_A + "N" + " = Misplaced");
+    legend_lines.push("");
+    legend_lines.push(CTRL_A + "K" + CTRL_A + "7" + " X " + CTRL_A + "N" + " = Not in word");
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
         console.putmsg("\n");
-        displayBoard(board, currentRow, mode, ANSWERS);
+        board_lines = generateBoard(board, currentRow, ANSWERS);
+        for (i = 0; i < board_lines.length; i++) {
+            if (legend_lines[i]) {
+                console.putmsg(" "+board_lines[i]+"  "+legend_lines[i]+"\n");
+            }
+            else {
+                console.putmsg(" "+board_lines[i]+"\n");
+            }
+        }
         console.putmsg("\n");
 
         var guess = "";
@@ -338,7 +356,7 @@ function playWordle(mode, game_mode) {
 
         if (allGreen) {
             console.clear();
-            console.putmsg("Congratulations! You guessed the word: " + word + "\n");
+            console.putmsg("Winner! You guessed the word: " + word + "\n");
             gameOver = true;
         }
     }
@@ -348,7 +366,15 @@ function playWordle(mode, game_mode) {
         console.putmsg("Game over! The word was: " + word + "\n");
     }
 
-    displayBoard(board, currentRow, mode, ANSWERS);
+    board_lines = generateBoard(board, currentRow, ANSWERS);
+    for (i = 0; i < board_lines.length; i++) {
+        if (legend_lines[i]) {
+            console.putmsg(" "+board_lines[i]+"  "+legend_lines[i]+"\n");
+        }
+        else {
+            console.putmsg(" "+board_lines[i]+"\n");
+        }
+    }
    
 
     if (game_mode == "daily") {
