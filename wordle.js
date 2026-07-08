@@ -525,10 +525,13 @@ function startWordle(mode) {
         console.clear();
         if (mode === "40") {
 	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
-            var intro_page_lines = generate_intro_card();
-            for (var i = 0; i < intro_page_lines.length; i++) {
-                console.print(intro_page_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
-            }
+            console.print("Test text");
+            console.print("Test text again");
+            console.print("Test one more time");
+            // var intro_page_lines = generate_intro_card();
+            // for (var i = 0; i < intro_page_lines.length; i++) {
+            //     console.print(intro_page_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
+            // }
             
             console.print(NEWLINE, p_mode=P_NOPAUSE);
         }
