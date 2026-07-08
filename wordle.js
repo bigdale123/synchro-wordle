@@ -305,11 +305,11 @@ function playWordle(mode, game_mode) {
     var board_lines = [];
 
     var legend_lines = [];
-    legend_lines.push(CTRL_A + "K" + CTRL_A + "2" + "[X]" + CTRL_A + "N" + " = Correct");
+    legend_lines.push(CTRL_A + "K" + CTRL_A + "2" + "[X]" + CTRL_A + "N" + " Correct");
     legend_lines.push("");
-    legend_lines.push(CTRL_A + "K" + CTRL_A + "2" + "!X!" + CTRL_A + "N" + " = Misplaced");
+    legend_lines.push(CTRL_A + "K" + CTRL_A + "3" + "!X!" + CTRL_A + "N" + " Misplaced");
     legend_lines.push("");
-    legend_lines.push(CTRL_A + "K" + CTRL_A + "7" + " X " + CTRL_A + "N" + " = Not in word");
+    legend_lines.push(CTRL_A + "K" + CTRL_A + "7" + " X " + CTRL_A + "N" + " Not in word");
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
@@ -317,7 +317,7 @@ function playWordle(mode, game_mode) {
         board_lines = generateBoard(board, currentRow, ANSWERS);
         for (i = 0; i < board_lines.length; i++) {
             if (legend_lines[i]) {
-                console.putmsg(" "+board_lines[i]+"  "+legend_lines[i]+"\n");
+                console.putmsg(" "+board_lines[i]+" "+legend_lines[i]+"\n");
             }
             else {
                 console.putmsg(" "+board_lines[i]+"\n");
@@ -369,7 +369,7 @@ function playWordle(mode, game_mode) {
     board_lines = generateBoard(board, currentRow, ANSWERS);
     for (i = 0; i < board_lines.length; i++) {
         if (legend_lines[i]) {
-            console.putmsg(" "+board_lines[i]+"  "+legend_lines[i]+"\n");
+            console.putmsg(" "+board_lines[i]+" "+legend_lines[i]+"\n");
         }
         else {
             console.putmsg(" "+board_lines[i]+"\n");
