@@ -235,8 +235,8 @@ function generateBoard(board, currentRow, ANSWERS) {
                 switch (board[i][j]) {
                     case "G":
                         colorCode = CTRL_A + "K" + CTRL_A + "2"; // Green
-                        indicators[0] = "[";
-                        indicators[1] = "]";
+                        indicators[0] = "(";
+                        indicators[1] = ")";
                         break;
                     case "Y":
                         colorCode = CTRL_A + "K" + CTRL_A + "3"; // Yellow
