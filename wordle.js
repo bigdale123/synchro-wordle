@@ -216,6 +216,10 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
         var midRow = "";
         var botRow = "";
 
+        var topMonoRow = "";
+        var midMonoRow = "";
+        var botMonoRow = "";
+
         if (i < currentRow) {
             // Display filled rows
             for (j = 0; j < WORD_LENGTH; j++) {
@@ -236,10 +240,16 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
                         colorCode = CTRL_A + "N";
                         break;
                 }
-
+                
                 topRow += colorCode + "   ";
                 midRow += colorCode + " " + current_letter + " ";
                 botRow += colorCode + "   ";
+
+                if(!console.term_supports(USER_COLOR)) {
+                    topMonoRow += "   ";
+                    midMonoRow += " " + current_letter + " ";
+                    botMonoRow += "   ";
+                }
             }
         } else {
             // Display empty rows - light shade block, no color coding
@@ -247,16 +257,28 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
                 topRow += "\xb0\xb0\xb0";
                 midRow += "\xb0\xb0\xb0";
                 botRow += "\xb0\xb0\xb0";
+
+                if(!console.term_supports(USER_COLOR)) {
+                    topMonoRow += "\xb0\xb0\xb0";
+                    midMonoRow += "\xb0\xb0\xb0";
+                    botMonoRow += "\xb0\xb0\xb0";
+                }
             }
         }
 
         topRow += CTRL_A + "N";
         midRow += CTRL_A + "N";
         botRow += CTRL_A + "N";
-
-        console.putmsg(centerText(topRow, 39)+"\n");
-        console.putmsg(centerText(midRow, 39)+"\n");
-        console.putmsg(centerText(botRow, 39)+"\n");
+        if(!console.term_supports(USER_COLOR)) {
+            console.putmsg(centerText(topRow+"  "+topMonoRow, 39)+"\n");
+            console.putmsg(centerText(midRow+"  "+midMonoRow, 39)+"\n");
+            console.putmsg(centerText(botRow+"  "+botMonoRow, 39)+"\n");
+        }
+        else {
+            console.putmsg(centerText(topRow, 39)+"\n");
+            console.putmsg(centerText(midRow, 39)+"\n");
+            console.putmsg(centerText(botRow, 39)+"\n");
+        }
     }
 }
 
