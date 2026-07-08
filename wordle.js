@@ -199,6 +199,8 @@ function generate_intro_card(){
     intro_page_lines.push(centerText("",40));
     intro_page_lines.push(centerText("Welcome to Wordle!",40));
     intro_page_lines.push(centerText("Guess the " + WORD_LENGTH + "-letter word in " + MAX_ATTEMPTS + " tries.", 40));
+
+    return intro_page_lines;
 }
 
 
