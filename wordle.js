@@ -254,7 +254,7 @@ function displayBoard(board, currentRow, mode, ANSWERS) {
                 
                 topRow += colorCode + "     ";
                 midRow += colorCode + " " + indicators[0] + current_letter + indicators[1] + " ";
-                botRow += colorCode + "   ";
+                botRow += colorCode + "     ";
             }
         } else {
             // Display empty rows - light shade block, no color coding
