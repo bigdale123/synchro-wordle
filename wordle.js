@@ -310,6 +310,7 @@ function playWordle(mode, game_mode) {
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
+        console.putmsg(USER_COLOR)
         console.putmsg("\n");
         displayBoard(board, currentRow, mode, ANSWERS);
         console.putmsg("\n");
