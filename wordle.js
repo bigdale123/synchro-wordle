@@ -193,6 +193,14 @@ function visibleLength(str) {
     return str.replace(/\x01./g, "").length;
 }
 
+function stripNewlines(text) {
+    if (typeof text !== "string") {
+        return text;
+    }
+
+    return text.replace(/\r\n|\r|\n/g, "");
+}
+
 function smartPrint(text, p_mode, orig_columns) {
     // This function is a wrapper to allow for full screen-width text
     // normally, printing 40 columns worth of text + a newline character causes an extra blank line to be printed.
@@ -203,9 +211,10 @@ function smartPrint(text, p_mode, orig_columns) {
     if (typeof orig_columns === "undefined") {
         orig_columns = 0;
     }
-    console.putmsg(visibleLength(text));
-    if (visibleLength(text) < console.screen_columns) {
-        console.putmsg(text + NEWLINE, p_mode, orig_columns);
+
+
+    if (visibleLength(text) === console.screen_columns) {
+        console.putmsg(stripNewlines(text), p_mode, orig_columns);
     }
     else {
         console.putmsg(text, p_mode, orig_columns);
