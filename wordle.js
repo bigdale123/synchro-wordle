@@ -14,7 +14,7 @@ var MAX_ATTEMPTS = 6;
 var WORD_LENGTH = 5;
 var STATS_FILE = system.data_dir + "wordle_stats.json"
 var CTRL_A = "\x01";
-var NEWLINE = CTRL_A + "[" + CTRL_A + "]";
+var NEWLINE = "\r\n";
 
 
 
