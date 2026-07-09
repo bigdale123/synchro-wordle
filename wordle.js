@@ -364,8 +364,10 @@ function playWordle(game_mode) {
             if (guess === null) {
                 guess = ""; // user disconnected or aborted input
             }
-
-            if (guess.length !== WORD_LENGTH) {
+            if (guess.includes(" ")) {
+                smartPrint("Guess cannot include spaces." + NEWLINE);
+            }
+            else if (guess.length !== WORD_LENGTH) {
                 smartPrint("Please enter exactly " + WORD_LENGTH + " letters." + NEWLINE);
             }
         }
