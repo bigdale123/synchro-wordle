@@ -190,7 +190,7 @@ function centerText(str, width) {
 }
 
 function visibleLength(str) {
-    return str.replace(/\x01./g, "").length;
+    return str.replace(/\x01.|\r\n|\r|\n/g, "").length;
 }
 
 function stripNewlines(text) {
@@ -198,7 +198,7 @@ function stripNewlines(text) {
         return text;
     }
 
-    return text.replace(/\r\n|\r|\n|\x01\[\x01\]/g, "");
+    return text.replace(/\r\n|\r|\n/g, "");
 }
 
 function smartPrint(text, p_mode, orig_columns) {
@@ -577,10 +577,10 @@ function startWordle() {
         choice = console.getstr(1, K_UPPER);
 
         if (choice === "D"){
-            playWordle(console.screen_columns, "daily");
+            playWordle("daily");
         }
         else if (choice === "P") {
-            playWordle(console.screen_columns, "practice");
+            playWordle("practice");
         }
         else if (choice === "S") {
             console.clear();
