@@ -110,12 +110,6 @@ function check_if_streak_valid(last_date_played) {
     }
 }
 
-// Determine screen mode (40 or 80 columns)
-function getScreenMode() {
-    var screenWidth = console.screen_columns;
-    return (screenWidth >= 80) ? "80" : "40";
-}
-
 function get_todays_date() {
     var date = new Date();
     var year = date.getFullYear();
@@ -197,6 +191,25 @@ function centerText(str, width) {
 
 function visibleLength(str) {
     return str.replace(/\x01./g, "").length;
+}
+
+function smartPrint(text, p_mode, orig_columns) {
+    // This function is a wrapper to allow for full screen-width text
+    // normally, printing 40 columns worth of text + a newline character causes an extra blank line to be printed.
+    // This function checks the text length against the user's terminal width and adds a newline if the line is less than the user's terminal width.
+    if (typeof p_mode === "undefined") {
+        p_mode = P_NONE;
+    }
+    if (typeof orig_columns === "undefined") {
+        orig_columns = 0;
+    }
+
+    if (text.length < console.screen_columns) {
+        console.putmsg(text + NEWLINE, p_mode, orig_columns);
+    }
+    else {
+        console.putmsg(text, p_mode, orig_columns);
+    }
 }
 
 function generate_intro_card(){
@@ -290,7 +303,7 @@ function generateBoard(board, currentRow, ANSWERS) {
 }
 
 // Playing the Game
-function playWordle(mode, game_mode) {
+function playWordle(game_mode) {
     var ANSWERS = [];
     var stats = loadStats();
 
@@ -298,8 +311,8 @@ function playWordle(mode, game_mode) {
     
     if (game_mode === "daily") {
         if (!check_player_can_play(stats)) {
-            console.print("You've already played today!" + NEWLINE);
-            console.print("You can try practice mode though!" + NEWLINE); 
+            smartPrint("You've already played today!" + NEWLINE);
+            smartPrint("You can try practice mode though!" + NEWLINE); 
             return;
         }
         else {
@@ -323,28 +336,28 @@ function playWordle(mode, game_mode) {
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
-        console.print(NEWLINE);
+        smartPrint(NEWLINE);
         board_lines = generateBoard(board, currentRow, ANSWERS);
         for (var i = 0; i < board_lines.length; i++) {
             if (legend_lines[i]) {
-                console.print(" " + board_lines[i] + " " + legend_lines[i] + NEWLINE);
+                smartPrint(" " + board_lines[i] + " " + legend_lines[i] + NEWLINE);
             }
             else {
-                console.print(" " + board_lines[i] + NEWLINE);
+                smartPrint(" " + board_lines[i] + NEWLINE);
             }
         }
-        console.print(NEWLINE);
+        smartPrint(NEWLINE);
 
         var guess = "";
         while (guess.length !== WORD_LENGTH) {
-            console.print("Enter your " + WORD_LENGTH + "-letter guess: ");
+            smartPrint("Enter your " + WORD_LENGTH + "-letter guess: ");
             guess = console.getstr(WORD_LENGTH, K_UPPER);
             if (guess === null) {
                 guess = ""; // user disconnected or aborted input
             }
 
             if (guess.length !== WORD_LENGTH) {
-                console.print("Please enter exactly " + WORD_LENGTH + " letters." + NEWLINE);
+                smartPrint("Please enter exactly " + WORD_LENGTH + " letters." + NEWLINE);
             }
         }
         ANSWERS.push(guess);
@@ -366,24 +379,24 @@ function playWordle(mode, game_mode) {
 
         if (allGreen) {
             console.clear();
-            console.print("Winner! You guessed the word: " + word + NEWLINE);
+            smartPrint("Winner! You guessed the word: " + word + NEWLINE);
             gameOver = true;
         }
     }
 
     if (!gameOver) {
         console.clear();
-        console.print("Game over! The word was: " + word + NEWLINE);
+        smartPrint("Game over! The word was: " + word + NEWLINE);
     }
 
-    console.print(NEWLINE);
+    smartPrint(NEWLINE);
     board_lines = generateBoard(board, currentRow, ANSWERS);
     for (var i = 0; i < board_lines.length; i++) {
         if (legend_lines[i]) {
-            console.print(" " + board_lines[i] + " " + legend_lines[i] + NEWLINE);
+            smartPrint(" " + board_lines[i] + " " + legend_lines[i] + NEWLINE);
         }
         else {
-            console.print(" " + board_lines[i] + NEWLINE);
+            smartPrint(" " + board_lines[i] + NEWLINE);
         }
     }
    
@@ -517,35 +530,33 @@ function generate_scoreboard(rows) {
     return lines;
 }
 
-function startWordle(mode) {
+function startWordle() {
     // Mainly responsible for the Main Menu, but is also the entry point of the game.
     // Takes in a "mode" that represents whether the user playing is using a 40 or 80 column display. 
     var choice = "";
     while (choice !== "Q") {
         console.clear();
-        if (mode === "40") {
-	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
-            console.writeln("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-            console.writeln("Test text again");
-            console.writeln("Test one more time");
-            // var intro_page_lines = generate_intro_card();
-            // for (var i = 0; i < intro_page_lines.length; i++) {
-            //     console.print(intro_page_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
-            // }
+        if (console.screen_columns === 40) {
+	        smartPrintfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
+
+            var intro_page_lines = generate_intro_card();
+            for (var i = 0; i < intro_page_lines.length; i++) {
+                smartPrint(intro_page_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
+            }
             
-            console.print(NEWLINE, p_mode=P_NOPAUSE);
+            smartPrint(NEWLINE, p_mode=P_NOPAUSE);
         }
         else {
-            console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
+            smartPrintfile(js.exec_dir + "banner.msg"); // 13 Rows
             var intro_page_lines = generate_intro_card();
-            var scoreboard_lines = generate_scoreboard(5, mode);
-            console.print(NEWLINE, p_mode=P_NOPAUSE);
+            var scoreboard_lines = generate_scoreboard(5, console.screen_columns);
+            smartPrint(NEWLINE, p_mode=P_NOPAUSE);
             for (var i = 0; i < scoreboard_lines.length; i++) {
                 if(intro_page_lines[i]) {
-                    console.print(intro_page_lines[i] + scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
+                    smartPrint(intro_page_lines[i] + scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
                 }
                 else {
-                    console.print(centerText("",40) + scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
+                    smartPrint(centerText("",40) + scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
                 }
                 
             }
@@ -553,20 +564,20 @@ function startWordle(mode) {
         }
 
         
-        console.print("[D]aily [P]ractice [S]core [Q]uit > ", p_mode=P_NOPAUSE);
+        smartPrint("[D]aily [P]ractice [S]core [Q]uit > ", p_mode=P_NOPAUSE);
         choice = console.getstr(1, K_UPPER);
 
         if (choice === "D"){
-            playWordle(mode, "daily");
+            playWordle(console.screen_columns, "daily");
         }
         else if (choice === "P") {
-            playWordle(mode, "practice");
+            playWordle(console.screen_columns, "practice");
         }
         else if (choice === "S") {
             console.clear();
-            var scoreboard_lines = generate_scoreboard(15, mode);
+            var scoreboard_lines = generate_scoreboard(15, smartPrint);
             for (var i = 0; i < scoreboard_lines.length; i++) {
-                console.print(scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
+                smartPrint(scoreboard_lines[i] + NEWLINE, p_mode=P_NOPAUSE);
             }
         }
     }
@@ -584,5 +595,4 @@ function startWordle(mode) {
 // Starts the Game
 ////////////////////////////
 
-var mode = getScreenMode();
-startWordle(mode);
+startWordle();
