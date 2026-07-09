@@ -554,6 +554,10 @@ function startWordle() {
             }
             
             smartPrint(NEWLINE, p_mode=P_NOPAUSE);
+            smartPrint(NEWLINE, p_mode=P_NOPAUSE);
+            smartPrint(NEWLINE, p_mode=P_NOPAUSE);
+            smartPrint(NEWLINE, p_mode=P_NOPAUSE);
+            smartPrint(NEWLINE, p_mode=P_NOPAUSE);
         }
         else {
             console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
