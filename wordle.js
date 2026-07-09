@@ -26,7 +26,13 @@ if (word_file.open("r")) {
     word_file.close();
 }
 
-
+// Load word list from file
+var VALID_WORDS = [];
+word_file = new File(js.exec_dir + "valid-words.csv");
+if (word_file.open("r")) {
+    VALID_WORDS = word_file.readAll();
+    word_file.close();
+}
 
 
 
@@ -370,6 +376,9 @@ function playWordle(game_mode) {
             }
             else if (guess.length !== WORD_LENGTH) {
                 smartPrint("Please enter exactly " + WORD_LENGTH + " letters." + NEWLINE);
+            }
+            else if (VALID_WORDS.indexOf(guess) === -1) {
+                smartPrint("Guess must be a real word." + NEWLINE);
             }
         }
         ANSWERS.push(guess);
