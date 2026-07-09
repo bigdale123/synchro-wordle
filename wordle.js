@@ -336,7 +336,7 @@ function playWordle(game_mode) {
 
     while (!gameOver && currentRow < MAX_ATTEMPTS) {
         console.clear()
-        smartPrint(NEWLINE);
+        smartPrint("");
         board_lines = generateBoard(board, currentRow, ANSWERS);
         for (var i = 0; i < board_lines.length; i++) {
             if (legend_lines[i]) {
@@ -346,7 +346,7 @@ function playWordle(game_mode) {
                 smartPrint(" " + board_lines[i] + NEWLINE);
             }
         }
-        smartPrint(NEWLINE);
+        smartPrint("");
 
         var guess = "";
         while (guess.length !== WORD_LENGTH) {
@@ -389,7 +389,7 @@ function playWordle(game_mode) {
         smartPrint("Game over! The word was: " + word + NEWLINE);
     }
 
-    smartPrint(NEWLINE);
+    smartPrint("");
     board_lines = generateBoard(board, currentRow, ANSWERS);
     for (var i = 0; i < board_lines.length; i++) {
         if (legend_lines[i]) {
@@ -537,7 +537,7 @@ function startWordle() {
     while (choice !== "Q") {
         console.clear();
         if (console.screen_columns === 40) {
-	        smartPrintfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
+	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
 
             var intro_page_lines = generate_intro_card();
             for (var i = 0; i < intro_page_lines.length; i++) {
