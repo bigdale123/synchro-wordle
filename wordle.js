@@ -365,6 +365,7 @@ function playWordle(game_mode) {
                 guess = ""; // user disconnected or aborted input
             }
             if (guess.indexOf(" ") !== -1) {
+                guess = "";
                 smartPrint("Guess cannot include spaces." + NEWLINE);
             }
             else if (guess.length !== WORD_LENGTH) {
