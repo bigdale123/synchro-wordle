@@ -375,9 +375,11 @@ function playWordle(game_mode) {
                 smartPrint("Guess cannot include spaces." + NEWLINE);
             }
             else if (guess.length !== WORD_LENGTH) {
+                guess = "";
                 smartPrint("Please enter exactly " + WORD_LENGTH + " letters." + NEWLINE);
             }
             else if (VALID_WORDS.indexOf(guess) === -1) {
+                guess = "";
                 smartPrint("Guess must be a real word." + NEWLINE);
             }
         }
