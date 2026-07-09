@@ -198,7 +198,7 @@ function stripNewlines(text) {
         return text;
     }
 
-    return text.replace(/\r\n|\r|\n|\x01\[\x01\]/g, "");
+    return text.replace(/\r\n|\r|\n|NEWLINE/g, "");
 }
 
 function smartPrint(text, p_mode, orig_columns) {
