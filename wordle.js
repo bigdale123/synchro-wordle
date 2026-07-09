@@ -24,6 +24,9 @@ var word_file = new File(js.exec_dir + "word-bank.csv");
 if (word_file.open("r")) {
     WORDS = word_file.readAll();
     word_file.close();
+    for (var i = 0; i < WORDS.length; i++) {
+        WORDS[i] = WORDS[i].toUpperCase();
+    }
 }
 
 // Load word list from file
@@ -32,6 +35,9 @@ word_file = new File(js.exec_dir + "valid-words.csv");
 if (word_file.open("r")) {
     VALID_WORDS = word_file.readAll();
     word_file.close();
+    for (var i = 0; i < VALID_WORDS.length; i++) {
+        VALID_WORDS[i] = VALID_WORDS[i].toUpperCase();
+    }
 }
 
 
@@ -137,7 +143,7 @@ function getDailyWord() {
     var msPerDay = 24 * 60 * 60 * 1000;
     var seed = Math.round((date - epoch) / msPerDay);
     var index = seed % WORDS.length;
-    return WORDS[index].toUpperCase();
+    return WORDS[index];
 }
 
 function check_player_can_play(stats) {
@@ -335,7 +341,7 @@ function playWordle(game_mode) {
         }
     }
     else if (game_mode === "practice") {
-        word = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
+        word = WORDS[Math.floor(Math.random() * WORDS.length)];
     }
     var board = makeEmptyBoard();
     var currentRow = 0;
@@ -370,13 +376,13 @@ function playWordle(game_mode) {
             if (guess === null) {
                 guess = ""; // user disconnected or aborted input
             }
-            if (guess.indexOf(" ") !== -1) {
-                guess = "";
-                smartPrint("Guess cannot include spaces." + NEWLINE);
-            }
-            else if (guess.length !== WORD_LENGTH) {
+            if (guess.length !== WORD_LENGTH) {
                 guess = "";
                 smartPrint("Please enter exactly " + WORD_LENGTH + " letters." + NEWLINE);
+            }
+            else if (guess.indexOf(" ") !== -1) {
+                guess = "";
+                smartPrint("Guess cannot include spaces." + NEWLINE);
             }
             else if (VALID_WORDS.indexOf(guess) === -1) {
                 guess = "";
