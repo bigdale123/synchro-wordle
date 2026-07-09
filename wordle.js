@@ -203,7 +203,7 @@ function smartPrint(text, p_mode, orig_columns) {
     if (typeof orig_columns === "undefined") {
         orig_columns = 0;
     }
-
+    console.putmsg(visibleLength(text));
     if (visibleLength(text) < console.screen_columns) {
         console.putmsg(text + NEWLINE, p_mode, orig_columns);
     }
