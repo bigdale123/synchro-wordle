@@ -204,7 +204,7 @@ function smartPrint(text, p_mode, orig_columns) {
         orig_columns = 0;
     }
 
-    if (text.length < console.screen_columns) {
+    if (visibleLength(text) < console.screen_columns) {
         console.putmsg(text + NEWLINE, p_mode, orig_columns);
     }
     else {
