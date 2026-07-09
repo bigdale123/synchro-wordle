@@ -547,7 +547,7 @@ function startWordle() {
             smartPrint(NEWLINE, p_mode=P_NOPAUSE);
         }
         else {
-            smartPrintfile(js.exec_dir + "banner.msg"); // 13 Rows
+            console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
             var intro_page_lines = generate_intro_card();
             var scoreboard_lines = generate_scoreboard(5, console.screen_columns);
             smartPrint(NEWLINE, p_mode=P_NOPAUSE);
