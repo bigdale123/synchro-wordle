@@ -14,7 +14,7 @@ var MAX_ATTEMPTS = 6;
 var WORD_LENGTH = 5;
 var STATS_FILE = system.data_dir + "wordle_stats.json"
 var CTRL_A = "\x01";
-var NEWLINE = CTRL_A + "[" + CTRL_A + "]";
+var NEWLINE = "\r\n";
 
 
 
@@ -198,7 +198,7 @@ function stripNewlines(text) {
         return text;
     }
 
-    return text.replace(/\r\n|\r|\n|NEWLINE/g, "");
+    return text.replace(/\r\n|\r|\n/g, "");
 }
 
 function smartPrint(text, p_mode, orig_columns) {
