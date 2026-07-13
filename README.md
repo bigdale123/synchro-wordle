@@ -1,3 +1,4 @@
+# Synchronet Wordle
 This is a wordle clone built for use on Synchronet BBSes. Mostly to learn more about how synchronet handles doors under the hood.
 I also wanted a simple game to learn on, and wordle seemed like a perfect fit. 
 
@@ -30,7 +31,7 @@ I also wanted a simple game to learn on, and wordle seemed like a perfect fit.
 Guess the 5-letter word in 6 tries. After each guess, each letter is marked as one of the following (with color also, if supported by the client terminal):
 - `(X)` — Correct letter in the correct position
 - `!X!` — Correct letter in the wrong position
-- ` X ` — Letter is not in the word
+-  `X`  — Letter is not in the word
 Guesses must be real words. The game will reject guesses that are not in the valid word dictionary.
 
 ### Menu Options
