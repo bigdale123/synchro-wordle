@@ -759,7 +759,7 @@ function startWordle() {
         // 1. Display Banner and Intro Card based on terminal width.
         if (console.screen_columns === 40) {
 	        // Use dedicated banner for smaller console size.
-            if (!console.term_supports(USER_ANSI)) {
+            if (!console.term_supports(USER_ANSI) && !console.term_supports(USER_PETSCII)) {
                 console.printfile(js.exec_dir + "banner.40col.ascii.msg"); // 6 Rows
             }
             else {
@@ -782,7 +782,7 @@ function startWordle() {
         }
         else {
             // Use general banner for larger console size.
-            if (!console.term_supports(USER_ANSI)) {
+            if (!console.term_supports(USER_ANSI) && !console.term_supports(USER_PETSCII)) {
                 console.printfile(js.exec_dir + "banner.ascii.msg"); // 13 Rows
             }
             else {
