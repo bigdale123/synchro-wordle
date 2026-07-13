@@ -759,7 +759,13 @@ function startWordle() {
         // 1. Display Banner and Intro Card based on terminal width.
         if (console.screen_columns === 40) {
 	        // Use dedicated banner for smaller console size.
-	        console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
+            if (!console.term_supports(USER_ANSI)) {
+                console.printfile(js.exec_dir + "banner.40col.ascii.msg"); // 6 Rows
+            }
+            else {
+                console.printfile(js.exec_dir + "banner.40col.msg"); // 6 Rows
+            }
+	        
 
             var intro_page_lines = generate_intro_card();
             // Print individual lines of the intro card.
@@ -776,7 +782,12 @@ function startWordle() {
         }
         else {
             // Use general banner for larger console size.
-            console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
+            if (!console.term_supports(USER_ANSI)) {
+                console.printfile(js.exec_dir + "banner.ascii.msg"); // 13 Rows
+            }
+            else {
+                console.printfile(js.exec_dir + "banner.msg"); // 13 Rows
+            }
             var intro_page_lines = generate_intro_card();
             // Generate scoreboard lines (first 5 entries) for the main menu.
             // A dedicated larger scoreboard can still be accessed with S.
