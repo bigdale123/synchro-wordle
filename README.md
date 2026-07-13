@@ -17,14 +17,14 @@ I also wanted a simple game to learn on, and wordle seemed like a perfect fit.
 
 # Screenshots
 ### 80 Column Mode in Color (Syncterm)
-<img src="screenshots/80colormenu.png" alt="Game Menu in 80 Columns with Color" width="50%">
-<img src="screenshots/80colorgame.png" alt="Gameplay in 80 Columns with Color" width="50%">
-<img src="screenshots/80colorscore.png" alt="Scoreboard in 80 Columns with Color" width="50%">
+<img src="screenshots/80colormenu.png" alt="Game Menu in 80 Columns with Color" width="60%">
+<img src="screenshots/80colorgame.png" alt="Gameplay in 80 Columns with Color" width="60%">
+<img src="screenshots/80colorscore.png" alt="Scoreboard in 80 Columns with Color" width="60%">
 
 ### 40 Column Mode in Color (CCGMS on C64U)
-<img src="screenshots/40colormenu.png" alt="Game Menu in 40 Columns with Color" width="50%">
-<img src="screenshots/40colorgame.png" alt="Gameplay in 40 Columns with Color" width="50%">
-<img src="screenshots/40colorscore.png" alt="Scoreboard in 40 Columns with Color" width="50%">
+<img src="screenshots/40colormenu.png" alt="Game Menu in 40 Columns with Color" width="60%">
+<img src="screenshots/40colorgame.png" alt="Gameplay in 40 Columns with Color" width="60%">
+<img src="screenshots/40colorscore.png" alt="Scoreboard in 40 Columns with Color" width="60%">
 
 # How to Play
 Guess the 5-letter word in 6 tries. After each guess, each letter is marked as one of the following (with color also, if supported by the client terminal):
